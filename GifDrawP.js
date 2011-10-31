@@ -2,7 +2,8 @@
 	var currentFrame = 0;
 	var frames=new Array(10);
 	var totalFrames = frames.length;
-	console.log(totalFrames);
+	$("#framenumber").attr("max",totalFrames-1);
+    
 	void setup() {  
 		size(500,500);  
 		stroke(0);
@@ -11,9 +12,9 @@
 		
 		for (var i=0; i < frames.length; i++) {
 		  frames[i] = get();
-		  console.log(i);
 		}
-		
+        processingTest();
+        
 	};
 	
 	void draw() {};
@@ -24,8 +25,6 @@
 	};
 	
 	void keyPressed() {
-	    console.log(key);
-        
 		if (key == "0") { switchFrame(0); };
 		if (key == "1") { switchFrame(1); };
 		if (key == "2") { switchFrame(2); };
@@ -45,16 +44,20 @@
 	};
 	
 	void switchFrame(framenum){
-		console.log("Going to Frame "+framenum);
+		console.log("Switching to Frame "+framenum);
 		frames[currentFrame] = get();
 		image(frames[framenum],0,0);
-        tint(255,100);
-		image(frames[whatsLastFrame()],0,0);
-		noTint();
-		
 		currentFrame = framenum;
+        $("#framenumber").val(currentFrame);
 	};
 	
+	void gotoFrame(framenum){
+	    console.log("Going to Frame "+framenum);
+		frames[currentFrame] = get();
+		image(frames[framenum],0,0);
+		currentFrame = framenum;
+	};
+
 	void whatsLastFrame(){
 	    if (currentFrame == 0) {
             return totalFrames-1;
@@ -69,11 +72,9 @@
         } else {
             switchFrame((currentFrame - 1));        
         };
-        console.log(currentFrame);
     };
     
     void nextFrame(){
         switchFrame((currentFrame + 1) % (totalFrames));
-        console.log(currentFrame);
         
     };
