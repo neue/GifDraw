@@ -26,6 +26,7 @@ $(document).ready(function() {
        encoder.finish();
        document.getElementById('output').src = 'data:image/gif;base64,'+encode64(encoder.stream().getData());        
     });
+    
     $('#frames').bind('click', function(event) {
         console.log("SPLITTING FRAMES");
         for (var i=0; i < window.totalFramesForEncoder; i++) {
@@ -37,6 +38,14 @@ $(document).ready(function() {
             document.getElementById('output'+i).src = 'data:image/gif;base64,'+encode64(encoder.stream().getData());        
         }
     });
+    
+    $('#newgif').bind('click', function(event) {
+        var numberOfFrames = prompt("How many frames should this AWESOME gif have?",10);
+        if (numberOfFrames) {
+            window.pjsin.init(parseInt(numberOfFrames));
+        };
+    });
+    
     $('label[for="size"]').text("Size "+$('#size').val());
     $('#size').bind('change', function(event) {
         window.pjsin.setStrokeWeight($('#size').val());

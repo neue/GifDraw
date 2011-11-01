@@ -1,31 +1,37 @@
-
-
     window.pjsin = Processing.getInstanceById("drawcanvas");
-	var saved = PImage;
-	var currentFrame = 0;
-	var frames=new Array(10);
-	var totalFrames = frames.length;
-    var onionSkin = true;
-    window.totalFramesForEncoder = totalFrames;
-	$("#framenumber").attr("max",totalFrames-1);
-	$("#framenumber").val(currentFrame);
-	    
     font = loadFont("Courier-12.vlw"); 
     textFont(font); 
-	
-	void setup() {  
-		size(450,450);  
-		stroke(0);
-		fill(0);
-		strokeWeight(5);
-		for (var i=0; i < frames.length; i++) {
+
+    void init(animationLength){
+        console.log("New Gif with "+animationLength+" frames");
+        currentFrame = 0;
+        frames= null;
+        console.log(animationLength);
+    	frames=new Array(animationLength);
+    	console.log(frames);
+    	totalFrames = frames.length;
+    	console.log(totalFrames);
+        onionSkin = true;
+        window.totalFramesForEncoder = totalFrames;
+    	$("#framenumber").attr("max",totalFrames-1);
+    	$("#framenumber").val(currentFrame);  
+    	for (var i=0; i < frames.length; i++) {
             frames[i] = createGraphics(450,450,RGB);
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
             frames[i].text("Frame "+i, 20, 40); 
 		}
-        switchFrame(0);
+        switchFrame(0);      
+    }
+	    
+
+	void setup() {  
+		size(450,450);  
+		stroke(0);
+		fill(0);
+		strokeWeight(5);
+        init(20);
 	};
 	
 	void draw() {
