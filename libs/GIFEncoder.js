@@ -58,7 +58,7 @@
 	    /*private*/ var colorDepth/*int*/; // number of bit planes
 	    /*private*/ var colorTab/*ByteArray*/; // RGB palette
 	    /*private*/ var usedEntry/*Array*/ = new Array; // active palette entries
-	    /*private*/ var palSize/*int*/ = 7; // color table size (bits-1)
+	    /*private*/ var palSize/*int*/ = 50; // color table size (bits-1)
 	    /*private*/ var dispose/*int*/ = -1; // disposal code (-1 = use default)
 	    /*private*/ var closeStream/*Boolean*/ = false; // close stream when finished
 	    /*private*/ var firstFrame/*Boolean*/ = true;

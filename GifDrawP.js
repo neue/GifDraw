@@ -14,7 +14,7 @@
     textFont(font); 
 	
 	void setup() {  
-		size(500,500);  
+		size(450,450);  
 		stroke(0);
 		fill(0);
 		strokeWeight(5);
@@ -31,6 +31,12 @@
 	void draw() {
 	    
 	};
+	
+	void mousePressed() {
+      if(mouseButton == LEFT)   {setStrokeColour(0,0,0)};
+      if(mouseButton == RIGHT)  {setStrokeColour(204,204,204)};
+    };
+    
 	
 	void mouseDragged() {  
 		line(pmouseX,pmouseY,mouseX,mouseY);
@@ -104,5 +110,21 @@
         gotoFrame(currentFrame);
         
         console.log("Onion Skin: "+onionSkin);
-    }
+    };
+    
+    void setStrokeWeight(value){
+        console.log("Setting Stroke to:"+value);
+        strokeWeight(value);
+        for (var i=0; i < frames.length; i++) {
+            frames[i].strokeWeight(value);
+        }
+    };
+
+    void setStrokeColour(R,G,B){
+        console.log("Setting Colour to:"+R+","+G+","+B);
+        stroke(R,G,B);
+        for (var i=0; i < frames.length; i++) {
+            frames[i].stroke(R,G,B);
+        }
+    };
         
