@@ -1,79 +1,136 @@
-$(document).ready(function() {
-	var canvas = document.getElementById('drawcanvas');
-	var pjs = new Processing("drawcanvas");
-	
-	var saved = pjs.PImage;
-	var currentFrame = 0;
-	var frames=new Array(9);
-	var totalFrames = frames.length;
-	console.log(totalFrames);
-	pjs.setup = function() {  
-		pjs.size(500,500);  
-		pjs.stroke(0);
-		pjs.noSmooth();
-		pjs.strokeWeight(5);
-		frames[0] = pjs.get();
-		frames[1] = pjs.get();
-		frames[2] = pjs.get();
-		frames[3] = pjs.get();
-		frames[4] = pjs.get();
-		frames[5] = pjs.get();
-		frames[6] = pjs.get();
-		frames[7] = pjs.get();
-		frames[8] = pjs.get();
-		frames[9] = pjs.get();
-		
+    window.pjsin = Processing.getInstanceById("drawcanvas");
+    // font = loadFont("Courier-12.vlw"); 
+    // textFont(font); 
+
+    void init(animationLength){
+        console.log("New Gif with "+animationLength+" frames");
+        currentFrame = 0;
+        frames= null;
+        console.log(animationLength);
+    	frames=new Array(animationLength);
+    	console.log(frames);
+    	totalFrames = frames.length;
+    	console.log(totalFrames);
+        onionSkin = true;
+        window.totalFramesForEncoder = totalFrames;
+    	$("#framenumber").attr("max",totalFrames-1);
+    	$("#framenumber").val(currentFrame);  
+    	for (var i=0; i < frames.length; i++) {
+            frames[i] = createGraphics(450,450,RGB);
+            frames[i].strokeWeight(5);
+            frames[i].stroke(0);
+            frames[i].fill(255,0,0);
+            frames[i].text("Frame "+i, 20, 40); 
+		}
+        switchFrame(0);      
+    }
+	    
+
+	void setup() {  
+		size(450,450);  
+		stroke(0);
+		fill(0);
+		strokeWeight(5);
+        init(20);
 	};
 	
-	pjs.draw = function() {};
-	
-	pjs.mouseDragged = function() {  
-		pjs.line(pjs.pmouseX,pjs.pmouseY,pjs.mouseX,pjs.mouseY);
-	
+	void draw() {
+	    
 	};
 	
-	pjs.keyPressed = function(){
-	    console.log(pjs.key);
-        
-		if (pjs.key == 49) { switchFrame(0); };
-		if (pjs.key == 50) { switchFrame(1); };
-		if (pjs.key == 51) { switchFrame(2); };
-		if (pjs.key == 52) { switchFrame(3); };
-		if (pjs.key == 53) { switchFrame(4); };
-		if (pjs.key == 54) { switchFrame(5); };
-		if (pjs.key == 55) { switchFrame(6); };
-		if (pjs.key == 56) { switchFrame(7); };
-		if (pjs.key == 57) { switchFrame(8); };
-		if (pjs.key == 48) { switchFrame(9); };
+	void mousePressed() {
+      if(mouseButton == LEFT)   {setStrokeColour(0,0,0)};
+      if(mouseButton == RIGHT)  {setStrokeColour(204,204,204)};
+    };
+    
+	
+	void mouseDragged() {  
+		line(pmouseX,pmouseY,mouseX,mouseY);
+        frames[currentFrame].beginDraw();
+		frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
+        frames[currentFrame].endDraw();
+	};
+	
+	void keyPressed() {
+	    console.log(key);
+		if (key == 97) {
+            image(testimg,0,0);
+		};
 		
-		if (pjs.key == pjs.CODED) {
-		    if (pjs.keyCode == pjs.LEFT)    {prevFrame();}
-		    if (pjs.keyCode == pjs.RIGHT)   {nextFrame();}
+		if (key == CODED) {
+		    if (keyCode == LEFT)    {prevFrame();}
+		    if (keyCode == RIGHT)   {nextFrame();}
 		};
 		
 	};
 	
-	switchFrame = function(framenum){
-		console.log("Going to Frame "+framenum);
-		frames[currentFrame] = pjs.get();
-		pjs.image(frames[framenum],0,0);
-		currentFrame = framenum;
+	void switchFrame(framenum){
+        gotoFrame(framenum);
+        $("#framenumber").val(currentFrame);
 	};
 	
-    prevFrame = function(){
+	void gotoFrame(framenum){
+	    console.log("Going to Frame "+framenum);
+        // frames[currentFrame] = get();
+		image(frames[framenum],0,0);
+		if (onionSkin) {
+            tint(255, 50);
+            image(frames[getOnionFrame(framenum)],0,0);
+    		noTint();		    
+		};
+		currentFrame = framenum;
+        text("Frame "+currentFrame, 20, 20); 
+	};
+	
+	void getOnionFrame(frame){
+	    if (frame != 0) {
+	        return frame - 1;
+	    } else {
+	        return 0;
+	    };
+	}
+	
+
+	void whatsLastFrame(){
+	    if (currentFrame == 0) {
+            return totalFrames-1;
+        } else {
+            return currentFrame - 1;        
+        };
+	}
+	
+    void prevFrame(){
         if (currentFrame == 0) {
-            switchFrame(totalFrames);
+            switchFrame(totalFrames-1);
         } else {
             switchFrame((currentFrame - 1));        
         };
-        console.log(currentFrame);
     };
     
-    nextFrame = function(){
-        switchFrame((currentFrame + 1) % (totalFrames+1));
-        console.log(currentFrame);
+    void nextFrame(){
+        switchFrame((currentFrame + 1) % (totalFrames));
+    };
+    
+    void setOnionSkin(value){
+        onionSkin = value;
+        gotoFrame(currentFrame);
         
+        console.log("Onion Skin: "+onionSkin);
     };
     
-	pjs.setup();  
-});
+    void setStrokeWeight(value){
+        console.log("Setting Stroke to:"+value);
+        strokeWeight(value);
+        for (var i=0; i < frames.length; i++) {
+            frames[i].strokeWeight(value);
+        }
+    };
+
+    void setStrokeColour(R,G,B){
+        console.log("Setting Colour to:"+R+","+G+","+B);
+        stroke(R,G,B);
+        for (var i=0; i < frames.length; i++) {
+            frames[i].stroke(R,G,B);
+        }
+    };
+        
