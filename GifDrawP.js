@@ -9,9 +9,7 @@
     window.totalFramesForEncoder = totalFrames;
 	$("#framenumber").attr("max",totalFrames-1);
 	$("#framenumber").val(currentFrame);
-	
-    PGraphics testimg = createGraphics(500,500,RGB);
-    
+	    
     font = loadFont("Courier-12.vlw"); 
     textFont(font); 
 	
@@ -21,11 +19,13 @@
 		fill(0);
 		strokeWeight(5);
 		for (var i=0; i < frames.length; i++) {
-            frames[i] = createGraphics(500,500,RGB);
+            frames[i] = createGraphics(450,450,RGB);
             frames[i].strokeWeight(5);
+            frames[i].stroke(0);
+            frames[i].fill(255,0,0);
+            frames[i].text("Frame "+i, 20, 40); 
 		}
-        noSmooth();
-        
+        switchFrame(0);
 	};
 	
 	void draw() {
@@ -37,7 +37,6 @@
         frames[currentFrame].beginDraw();
 		frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
         frames[currentFrame].endDraw();
-	
 	};
 	
 	void keyPressed() {
@@ -106,4 +105,4 @@
         
         console.log("Onion Skin: "+onionSkin);
     }
-    
+        
