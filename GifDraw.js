@@ -9,9 +9,9 @@
         console.log(animationLength);
     	frames=new Array(animationLength);
     	console.log(frames);
+        onionSkin = true;
     	totalFrames = frames.length;
     	console.log(totalFrames);
-        onionSkin = true;
         window.totalFramesForEncoder = totalFrames;
     	$("#framenumber").attr("max",totalFrames-1);
     	$("#framenumber").val(currentFrame);  
@@ -20,10 +20,50 @@
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
-            frames[i].text("Frame "+i, 20, 40); 
+            frames[i].text("Frame "+i, 20, 20); 
+            frames[i].fill(0,0,0);
 		}
         switchFrame(0);      
     }
+    
+    void resetFrameData(targetFrame){
+    	totalFrames = frames.length;
+    	console.log(totalFrames);
+        window.totalFramesForEncoder = totalFrames;
+    	$("#framenumber").attr("max",totalFrames-1);
+    	$("#framenumber").val(currentFrame);  
+        switchFrame(targetFrame);      
+    };
+    
+    void addFrame(){
+        console.log("Frames before addition:"+frames.length);
+        framesBefore    = frames.splice(0,parseInt(currentFrame)+1);		
+        framesAfter     = frames.splice(0,frames.length);
+        framesBefore.push(null);
+        framesBefore[framesBefore.length-1] = createGraphics(450,450,RGB);
+        framesBefore[framesBefore.length-1].strokeWeight(5);
+        framesBefore[framesBefore.length-1].stroke(0);
+        framesBefore[framesBefore.length-1].fill(255,0,0);
+        framesBefore[framesBefore.length-1].text("NEW Frame", 20, 20); 
+        framesBefore[framesBefore.length-1].fill(0,0,0);
+        framesCombined  = framesBefore.concat(framesAfter);
+		frames = framesCombined;
+        console.log("Frames after addition :"+frames.length);
+        resetFrameData(parseInt(currentFrame)+1);
+        
+    };
+    
+    void removeFrame(){
+        if(frames.length > 1){
+            console.log("Frames before deletion:"+frames.length);
+    		framesBefore    = frames.splice(0,currentFrame);
+    		framesAfter     = frames.splice(1,frames.length);
+    		framesCombined  = framesBefore.concat(framesAfter);
+            frames = framesCombined;
+            console.log("Frames after deletion :"+frames.length);
+            resetFrameData(currentFrame - 1);
+        }
+    };
 	    
 
 	void setup() {  
@@ -31,7 +71,7 @@
 		stroke(0);
 		fill(0);
 		strokeWeight(5);
-        init(20);
+        init(5);
 	};
 	
 	void draw() {
@@ -72,7 +112,6 @@
 	
 	void gotoFrame(framenum){
 	    console.log("Going to Frame "+framenum);
-        // frames[currentFrame] = get();
 		image(frames[framenum],0,0);
 		if (onionSkin) {
             tint(255, 50);
@@ -80,7 +119,8 @@
     		noTint();		    
 		};
 		currentFrame = framenum;
-        text("Frame "+currentFrame, 20, 20); 
+        $('label[for="framenumber"]').text("Frame "+currentFrame);
+        
 	};
 	
 	void getOnionFrame(frame){
@@ -108,14 +148,11 @@
         };
     };
     
-    void nextFrame(){
-        switchFrame((currentFrame + 1) % (totalFrames));
-    };
+    void nextFrame(){ switchFrame((currentFrame + 1) % (totalFrames)); };
     
     void setOnionSkin(value){
         onionSkin = value;
         gotoFrame(currentFrame);
-        
         console.log("Onion Skin: "+onionSkin);
     };
     

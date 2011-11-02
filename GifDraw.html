@@ -38,25 +38,23 @@
 				<input type="checkbox" id="onionSkin" name="onionSkin" value="onionSkin" checked />
 			</div>
 		</form>
-			<div class="input">
-				<button class="btn" id="encode">&#x2605; MAKE GIF &#x2605;</button>
-				<button class="btn" id="frames">Make Frames</button>
-				<button class="btn danger" id="newgif">New GIF</button>
-				
-			</div>
+	</div>
+	<div class="well">
+		<div class="input">
+			<button class="btn" id="addFrame">+</button>
+			<button class="btn" id="delFrame">-</button>
+			
+		</div>
+	</div>
+	<div class="well">
+		<div class="input">
+			<button class="btn success" id="encode">&#x2605; MAKE GIF &#x2605;</button>
+			<button class="btn" id="frames">Make Frames</button>
+			<button class="btn danger" id="newgif">New GIF</button>
+		</div>		
 	</div>
 		<img id="output"/>
-		<table>
-			<tr><td>0</td><td><img id="output0"/></td></tr>
-			<tr><td>1</td><td><img id="output1"/></td></tr>
-			<tr><td>2</td><td><img id="output2"/></td></tr>
-			<tr><td>3</td><td><img id="output3"/></td></tr>
-			<tr><td>4</td><td><img id="output4"/></td></tr>
-			<tr><td>5</td><td><img id="output5"/></td></tr>
-			<tr><td>6</td><td><img id="output6"/></td></tr>
-			<tr><td>7</td><td><img id="output7"/></td></tr>
-			<tr><td>8</td><td><img id="output8"/></td></tr>
-			<tr><td>9</td><td><img id="output9"/></td></tr>
+		<table id="frameOutput">
 		</table>
 	</div>
 </div>
