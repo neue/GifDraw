@@ -53,9 +53,10 @@
 	
 	void keyPressed() {
 	    console.log(key);
-		if (key == 97) {
-            image(testimg,0,0);
-		};
+        // +
+        if (key == 61) { $('#size').val(parseInt($('#size').val())+1).change(); };
+        // -
+        if (key == 45) { $('#size').val(parseInt($('#size').val())-1).change(); };
 		
 		if (key == CODED) {
 		    if (keyCode == LEFT)    {prevFrame();}
@@ -86,7 +87,7 @@
 	    if (frame != 0) {
 	        return frame - 1;
 	    } else {
-	        return 0;
+	        return totalFrames - 1;
 	    };
 	}
 	
