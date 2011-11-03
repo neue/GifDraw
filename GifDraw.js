@@ -83,7 +83,7 @@
     };
 	   	
 	void mousePressed() {
-      if(mouseButton == LEFT)   {setStrokeColour(0,0,0)};
+      //if(mouseButton == LEFT)   {setStrokeColour(0,0,0)};
       if(mouseButton == RIGHT)  {setStrokeColour(204,204,204)};
     };
     
