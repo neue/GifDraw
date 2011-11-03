@@ -2,6 +2,23 @@
     // font = loadFont("Courier-12.vlw"); 
     // textFont(font); 
 
+	canvasWidth  = 450;
+	canvasHeight = 450;
+
+	clipboard = createGraphics(canvasWidth,canvasHeight,RGB);
+
+	void setup(){  
+		size(canvasWidth,canvasHeight);  
+		stroke(0);
+		fill(0);
+		strokeWeight(5);
+        init(5);
+	};
+	
+	void draw() {
+	    
+	};
+
     void init(animationLength){
         console.log("New Gif with "+animationLength+" frames");
         currentFrame = 0;
@@ -16,7 +33,7 @@
     	$("#framenumber").attr("max",totalFrames-1);
     	$("#framenumber").val(currentFrame);  
     	for (var i=0; i < frames.length; i++) {
-            frames[i] = createGraphics(450,450,RGB);
+            frames[i] = createGraphics(canvasWidth,canvasHeight,RGB);
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
@@ -40,7 +57,7 @@
         framesBefore    = frames.splice(0,parseInt(currentFrame)+1);		
         framesAfter     = frames.splice(0,frames.length);
         framesBefore.push(null);
-        framesBefore[framesBefore.length-1] = createGraphics(450,450,RGB);
+        framesBefore[framesBefore.length-1] = createGraphics(canvasWidth,canvasHeight,RGB);
         framesBefore[framesBefore.length-1].strokeWeight(5);
         framesBefore[framesBefore.length-1].stroke(0);
         framesBefore[framesBefore.length-1].fill(255,0,0);
@@ -64,20 +81,7 @@
             resetFrameData(currentFrame - 1);
         }
     };
-	    
-
-	void setup() {  
-		size(450,450);  
-		stroke(0);
-		fill(0);
-		strokeWeight(5);
-        init(5);
-	};
-	
-	void draw() {
-	    
-	};
-	
+	   	
 	void mousePressed() {
       if(mouseButton == LEFT)   {setStrokeColour(0,0,0)};
       if(mouseButton == RIGHT)  {setStrokeColour(204,204,204)};
@@ -97,6 +101,10 @@
         if (key == 61) { $('#size').val(parseInt($('#size').val())+1).change(); };
         // -
         if (key == 45) { $('#size').val(parseInt($('#size').val())-1).change(); };
+        // c
+		if (key == 99) { clipboardCopy(); };
+        // p
+		if (key == 112) { clipboardPaste(); };
 		
 		if (key == CODED) {
 		    if (keyCode == LEFT)    {prevFrame();}
@@ -149,7 +157,12 @@
     };
     
     void nextFrame(){ switchFrame((currentFrame + 1) % (totalFrames)); };
-    
+
+//
+//	Tools
+//    
+
+
     void setOnionSkin(value){
         onionSkin = value;
         gotoFrame(currentFrame);
@@ -171,4 +184,16 @@
             frames[i].stroke(R,G,B);
         }
     };
-        
+
+	void clipboardCopy(){
+		console.log("Copied");
+		clipboard = frames[currentFrame].get();
+	};
+      
+  	void clipboardPaste(){
+		console.log("Pasted");
+		frames[currentFrame].image(clipboard);
+		switchFrame(currentFrame);
+		
+		
+	};

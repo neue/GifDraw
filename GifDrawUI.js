@@ -36,6 +36,14 @@ $(document).ready(function() {
     $('#delFrame').bind('click', function(event) {
        window.pjsin.removeFrame();
     });
+
+    $('#copy').bind('click', function(event) {
+       window.pjsin.clipboardCopy();
+    });
+
+    $('#paste').bind('click', function(event) {
+       window.pjsin.clipboardPaste();
+    });
     
 //
 //  Encoder
