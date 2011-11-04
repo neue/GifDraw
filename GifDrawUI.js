@@ -30,6 +30,9 @@ $(document).ready(function() {
         R = parseInt($('#colourR').val());  
         G = parseInt($('#colourG').val());  
         B = parseInt($('#colourB').val());  
+        window.leftColour[0] = R;
+        window.leftColour[1] = G;
+        window.leftColour[2] = B;
         window.pjsin.setStrokeColour(R,G,B);
     };
     
@@ -38,7 +41,7 @@ $(document).ready(function() {
 //
     
     $('#newgif').bind('click', function(event) {
-        var numberOfFrames = prompt("How many frames should this AWESOME gif have?",10);
+        var numberOfFrames = prompt("How many frames should this AWESOME gif have?",window.totalFramesForEncoder);
         if (numberOfFrames) {
             window.pjsin.init(parseInt(numberOfFrames));
         };
@@ -58,6 +61,10 @@ $(document).ready(function() {
 
     $('#paste').bind('click', function(event) {
        window.pjsin.clipboardPaste();
+    });
+
+    $('#undo').bind('click', function(event) {
+       window.pjsin.retrieveUndoState();
     });
     
 //

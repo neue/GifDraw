@@ -5,7 +5,13 @@
 	canvasWidth  = 450;
 	canvasHeight = 450;
 
-	clipboard = createGraphics(canvasWidth,canvasHeight,RGB);
+	clipboard   = createGraphics(canvasWidth,canvasHeight,RGB);
+	undo        = createGraphics(canvasWidth,canvasHeight,RGB);
+	undoPossible  = false;
+	
+    window.leftColour  = [0,0,0];
+    window.rightColour = [204,204,204];
+    
 
 	void setup(){  
 		size(canvasWidth,canvasHeight);  
@@ -83,12 +89,17 @@
     };
 	   	
 	void mousePressed() {
-      //if(mouseButton == LEFT)   {setStrokeColour(0,0,0)};
-      if(mouseButton == RIGHT)  {setStrokeColour(204,204,204)};
+        saveUndoState();
+      if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
+      if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
+      point(mouseX, mouseY);
+      
     };
     
 	
 	void mouseDragged() {  
+      if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
+      if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
 		line(pmouseX,pmouseY,mouseX,mouseY);
         frames[currentFrame].beginDraw();
 		frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
@@ -104,7 +115,9 @@
         // c
 		if (key == 99) { clipboardCopy(); };
         // p
-		if (key == 112) { clipboardPaste(); };
+        if (key == 112) { clipboardPaste(); };
+        // z
+        if (key == 122) { retrieveUndoState(); };
 		
 		if (key == CODED) {
 		    if (keyCode == LEFT)    {prevFrame();}
@@ -119,6 +132,7 @@
 	};
 	
 	void gotoFrame(framenum){
+	    undoPossible = false;
 	    console.log("Going to Frame "+framenum);
 		image(frames[framenum],0,0);
 		if (onionSkin) {
@@ -187,13 +201,24 @@
 
 	void clipboardCopy(){
 		console.log("Copied");
-		clipboard = frames[currentFrame].get();
+        clipboard = frames[currentFrame].get();
 	};
       
   	void clipboardPaste(){
 		console.log("Pasted");
-		frames[currentFrame].image(clipboard);
-		switchFrame(currentFrame);
-		
-		
 	};
+	
+	void saveUndoState(){
+        undo = frames[currentFrame].get();
+        undoPossible = true;
+	}
+	
+	void retrieveUndoState(){
+	    if (undoPossible) {
+    		frames[currentFrame].image(undo);
+    		switchFrame(currentFrame);	    	        
+	    } else {
+	        console.log("Can't Undo");
+	    };
+		undoPossible = false;
+	}
