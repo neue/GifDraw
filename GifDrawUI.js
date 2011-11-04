@@ -1,5 +1,6 @@
 $(document).ready(function() {
     
+    
 //     
 //  Tools 
 // 
@@ -19,22 +20,24 @@ $(document).ready(function() {
     });
     
     // Colour
-    $('#colourR').bind('change', function(event) { console.log("sfds"); setColour() });
-    $('#colourG').bind('change', function(event) { setColour() });
-    $('#colourB').bind('change', function(event) { setColour() });
     
-    function setColour(){
-        if ($('#colourR').val() > 255) { $('#colourR').val("255"); };
-        if ($('#colourG').val() > 255) { $('#colourG').val("255"); };
-        if ($('#colourB').val() > 255) { $('#colourB').val("255"); };
-        R = parseInt($('#colourR').val());  
-        G = parseInt($('#colourG').val());  
-        B = parseInt($('#colourB').val());  
-        window.leftColour[0] = R;
-        window.leftColour[1] = G;
-        window.leftColour[2] = B;
-        window.pjsin.setStrokeColour(R,G,B);
-    };
+    $('#leftColour').miniColors({
+        change: function(hex, rgb) {
+            window.leftColour[0] = rgb.r;
+            window.leftColour[1] = rgb.g;
+            window.leftColour[2] = rgb.b;
+            window.pjsin.setStrokeColour(rgb.r,rgb.g,rgb.b);
+        }
+    });
+    
+    $('#rightColour').miniColors({
+        change: function(hex, rgb) {
+            window.rightColour[0] = rgb.r;
+            window.rightColour[1] = rgb.g;
+            window.rightColour[2] = rgb.b;
+        }
+    });
+    
     
 //
 //  Documents

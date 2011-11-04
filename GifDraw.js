@@ -40,6 +40,7 @@
     	$("#framenumber").val(currentFrame);  
     	for (var i=0; i < frames.length; i++) {
             frames[i] = createGraphics(canvasWidth,canvasHeight,RGB);
+            frames[i].background(rightColour[0],rightColour[1],rightColour[2]);
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
@@ -104,6 +105,7 @@
         frames[currentFrame].beginDraw();
 		frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
         frames[currentFrame].endDraw();
+        console.log(mouseX);
 	};
 	
 	void keyPressed() {
