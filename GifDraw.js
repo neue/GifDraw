@@ -94,6 +94,7 @@
       if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
       if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
       point(mouseX, mouseY);
+      frames[currentFrame].point(mouseX, mouseY);
       
     };
     
