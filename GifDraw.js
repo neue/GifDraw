@@ -1,4 +1,4 @@
-/* @pjs crisp="true"; */
+
     window.pjsin = Processing.getInstanceById("drawcanvas");
 
 	canvasWidth  = 450;
@@ -18,7 +18,6 @@
 		fill(0);
 		strokeWeight(5);
         init(5);
-		noSmooth();
 	};
 	
 	void draw() {
@@ -93,8 +92,8 @@
         saveUndoState();
       if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
       if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
-      //point(mouseX, mouseY);
-      //frames[currentFrame].point(mouseX, mouseY);
+      point(mouseX, mouseY);
+      frames[currentFrame].point(mouseX, mouseY);
       
     };
     
@@ -103,9 +102,9 @@
       if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
       if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
 		line(pmouseX,pmouseY,mouseX,mouseY);
-        frames[currentFrame].beginDraw();
+        // frames[currentFrame].beginDraw();
 		frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
-        frames[currentFrame].endDraw();
+        // frames[currentFrame].endDraw();
         console.log(mouseX);
 	};
 	
@@ -121,6 +120,8 @@
         if (key == 112) { clipboardPaste(); };
         // z
         if (key == 122) { retrieveUndoState(); };
+        // i
+        if (key == 105) { grabColour(); };
 		
 		if (key == CODED) {
 		    if (keyCode == LEFT)    {prevFrame();}
@@ -148,13 +149,21 @@
         
 	};
 	
-	void getOnionFrame(frame){
-	    if (frame != 0) {
-	        return frame - 1;
-	    } else {
-	        return totalFrames - 1;
-	    };
-	}
+    void getOnionFrame(frame){
+        if (frame != 0) {
+            return frame - 1;
+        } else {
+            return totalFrames - 1;
+        };
+    }
+
+    void getMotionBlurFrame(target){
+        if (frame-target < 1) {
+            return totalFrames - target;
+        } else {
+            return frame - target;
+        };
+    }
 	
 
 	void whatsLastFrame(){
@@ -195,11 +204,16 @@
     };
 
     void setStrokeColour(R,G,B){
-        console.log("Setting Colour to:"+R+","+G+","+B);
         stroke(R,G,B);
         for (var i=0; i < frames.length; i++) {
             frames[i].stroke(R,G,B);
         }
+    };
+    
+    void grabColour(){
+        grabbed = get(mouseX,mouseY);
+        $('#leftColour').miniColors('value',hex(grabbed,6));
+        
     };
 
 	void clipboardCopy(){
@@ -209,12 +223,14 @@
       
   	void clipboardPaste(){
 		console.log("Pasted");
+		frames[currentFrame].image(clipboard);
+        switchFrame(currentFrame);
 	};
 	
 	void saveUndoState(){
         undo = frames[currentFrame].get();
         undoPossible = true;
-	}
+	};
 	
 	void retrieveUndoState(){
 	    if (undoPossible) {
