@@ -1,6 +1,5 @@
+/* @pjs crisp="true"; */
     window.pjsin = Processing.getInstanceById("drawcanvas");
-    // font = loadFont("Courier-12.vlw"); 
-    // textFont(font); 
 
 	canvasWidth  = 450;
 	canvasHeight = 450;
@@ -19,6 +18,7 @@
 		fill(0);
 		strokeWeight(5);
         init(5);
+		noSmooth();
 	};
 	
 	void draw() {
@@ -93,8 +93,8 @@
         saveUndoState();
       if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
       if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
-      point(mouseX, mouseY);
-      frames[currentFrame].point(mouseX, mouseY);
+      //point(mouseX, mouseY);
+      //frames[currentFrame].point(mouseX, mouseY);
       
     };
     
