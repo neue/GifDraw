@@ -1,3 +1,4 @@
+/* @pjs globalKeyEvents="true"; */
 
     window.pjsin = Processing.getInstanceById("drawcanvas");
 

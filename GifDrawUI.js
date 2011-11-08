@@ -1,6 +1,10 @@
 $(document).ready(function() {
     
-    
+// Text Select cursor fix
+    var canvas = document.getElementById('drawcanvas');
+    canvas.onselectstart = function () { return false; } // ie
+    canvas.onmousedown = function () { return false; } // mozilla
+      
 //     
 //  Tools 
 // 
