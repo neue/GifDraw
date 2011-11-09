@@ -1,3 +1,7 @@
+body {
+	background-image: url('./img/Background.gif');
+}
+
 #drawcanvas {
     cursor: url('./img/pencil.cur'), crosshair;
 }
