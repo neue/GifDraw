@@ -4,4 +4,5 @@ body {
 
 #drawcanvas {
     cursor: url('./img/pencil.cur'), crosshair;
+    image-rendering: -webkit-optimize-contrast;
 }

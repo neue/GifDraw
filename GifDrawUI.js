@@ -4,7 +4,7 @@ $(document).ready(function() {
     var canvas = document.getElementById('drawcanvas');
     canvas.onselectstart = function () { return false; } // ie
     canvas.onmousedown = function () { return false; } // mozilla
-      
+        
 //     
 //  Tools 
 // 
@@ -67,7 +67,7 @@ $(document).ready(function() {
     });
 
     $('#paste').bind('click', function(event) {
-       window.pjsin.clipboardPaste();
+       window.pjsin.clipboardPaste();       
     });
 
     $('#undo').bind('click', function(event) {
