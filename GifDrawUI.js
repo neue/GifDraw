@@ -14,8 +14,9 @@ $(document).ready(function() {
     });
     
     $('label[for="size"]').text("Size "+$('#size').val());
+    $('#size').bind('mouseup', function(event) { window.pjsin.setStrokeWeight($('#size').val()); });
     $('#size').bind('change', function(event) {
-        window.pjsin.setStrokeWeight($('#size').val());
+        // window.pjsin.setStrokeWeight($('#size').val());
         $('label[for="size"]').text("Size "+$('#size').val());
     });
 	

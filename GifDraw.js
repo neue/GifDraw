@@ -11,6 +11,8 @@
 	
     window.leftColour  = [0,0,0];
     window.rightColour = [204,204,204];
+    lineWidth = $('#size').val(parseInt($('#size').val()));
+    
     
 
 	void setup(){  
@@ -93,20 +95,24 @@
         saveUndoState();
       if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
       if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
-      point(mouseX, mouseY);
-      frames[currentFrame].point(mouseX, mouseY);
+      //       line(mouseX,mouseY,mouseX,mouseY);
+      // frames[currentFrame].line(mouseX,mouseY,mouseX,mouseY);
+      pencilLine(mouseX,mouseY,mouseX,mouseY);   
       
     };
     
+    void mouseReleased(){
+        // HACK
+        frames[currentFrame].loadPixels();
+        // END HACK
+    }
 	
 	void mouseDragged() {  
       if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
       if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
-		line(pmouseX,pmouseY,mouseX,mouseY);
-        // frames[currentFrame].beginDraw();
-		frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
-        // frames[currentFrame].endDraw();
-        console.log(mouseX);
+        // line(pmouseX,pmouseY,mouseX,mouseY);
+        // frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
+        pencilLine(pmouseX,pmouseY,mouseX,mouseY);   
 	};
 	
 	void keyPressed() {
@@ -134,6 +140,7 @@
 	void switchFrame(framenum){
         gotoFrame(framenum);
         $("#framenumber").val(currentFrame);
+        
 	};
 	
 	void gotoFrame(framenum){
@@ -202,6 +209,8 @@
         for (var i=0; i < frames.length; i++) {
             frames[i].strokeWeight(value);
         }
+        setBrushWidth(parseInt(value));
+        
     };
 
     void setStrokeColour(R,G,B){
@@ -242,3 +251,6 @@
 	    };
 		undoPossible = false;
 	}
+	
+	
+	
