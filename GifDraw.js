@@ -5,12 +5,13 @@
 	canvasWidth  = 450;
 	canvasHeight = 450;
 
-	clipboard   = createGraphics(canvasWidth,canvasHeight,RGB);
-	undo        = createGraphics(canvasWidth,canvasHeight,RGB);
-	undoPossible  = false;
+	clipboard       = createGraphics(canvasWidth,canvasHeight,RGB);
+	undo            = createGraphics(canvasWidth,canvasHeight,RGB);
+	undoPossible    = false;
 	
     window.leftColour  = [0,0,0];
     window.rightColour = [204,204,204];
+    
     lineWidth = $('#size').val(parseInt($('#size').val()));
     
     
@@ -76,7 +77,6 @@
 		frames = framesCombined;
         console.log("Frames after addition :"+frames.length);
         resetFrameData(parseInt(currentFrame)+1);
-        
     };
     
     void removeFrame(){
@@ -210,7 +210,6 @@
             frames[i].strokeWeight(value);
         }
         setBrushWidth(parseInt(value));
-        
     };
 
     void setStrokeColour(R,G,B){

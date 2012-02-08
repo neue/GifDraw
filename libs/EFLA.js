@@ -4,15 +4,11 @@
 
 void setPixel(int x,int y, PGraphics targetCanvas) {
     if (targetCanvas) {
-       targetCanvas.set(x,y,color(0,0,0));        
+       targetCanvas.set(x,y,color(window.leftColour[0],window.leftColour[1],window.leftColour[2]));        
     } else {
-        set(x,y,color(0,0,0));
-        frames[currentFrame].set(x,y,color(0,0,0));   
+        set(x,y,color(window.leftColour[0],window.leftColour[1],window.leftColour[2]));
+        frames[currentFrame].set(x,y,color(window.leftColour[0],window.leftColour[1],window.leftColour[2]));   
     };
-}
-
-void testme(){
-    console.log("TEST");
 }
 
 void efLine(int x, int y, int x2, int y2, PGraphics targetCanvas) {
@@ -87,105 +83,54 @@ void bCircle(int x0, int y0, int radius, PGraphics targetCanvas){
   }
 }
 
-// void mouseDragged(){
-//     pencilLine(pmouseX, pmouseY,mouseX,mouseY);
-// }
-// 
-// void mousePressed() {
-//     pencilLine(mouseX,mouseY,mouseX,mouseY);   
-// }
-
-
-// void keyPressed() {
-//     if (key == 61) { lineWidth += 1;};
-//     if (key == 45) { lineWidth -= 1;};
-//     if (lineWidth <= 0) { lineWidth = 1 };
-//     console.log(lineWidth);
-//     setBrushWidth(lineWidth-1);
-//     
-// }
-
-PGraphics brush = createGraphics(70,70);
+PGraphics leftBrush     = createGraphics(70,70);
+PGraphics rightBrush    = createGraphics(70,70);
 
 void setBrushWidth(int newLineWidth){
     lineWidth = newLineWidth;
-    brush = createGraphics(70,70);
+    leftBrush = createGraphics(70,70);
+    righBrush = createGraphics(70,70);
     
-    brush.background(0,0,0,0);
-    
-    bCircle(35,35,lineWidth-1,brush);
-    // HACK
-    brush.loadPixels();
-    // END HACK
+    buildBrush(leftBrush);
+    buildBrush(rightBrush);
     console.log("EFLA Width:"+lineWidth);
-    image(brush,40,40);
+    image(leftBrush,40,40);
+    image(rightBrush,140,40);
+}
+void buildBrush(PGraphics brushToBuild){
+    console.log(brushToBuild);
+    brushToBuild.background(0,0,0,0);
+    // Set special case square brush
+    if (lineWidth == 2) {
+        setPixel(35,35,brushToBuild);
+        setPixel(36,35,brushToBuild);
+        setPixel(35,36,brushToBuild);
+        setPixel(36,36,brushToBuild);
+    } else {
+        bCircle(35,35,lineWidth-2,brushToBuild);    
+    };
+    // HACK
+    brushToBuild.loadPixels();
+    // END HACK
 }
 
 
 void drawBrush(x,y){
     imageMode(CENTER);
     frames[currentFrame].imageMode(CENTER);
-    image(brush,x,y);
-    frames[currentFrame].image(brush,x,y);
+    image(leftBrush,x,y);
+    frames[currentFrame].image(leftBrush,x,y);
     imageMode(CORNER);
     frames[currentFrame].imageMode(CORNER);
 }
 
 void pencilLine(int x1,int y1,int x2,int y2){
-    console.log("pencil:"+lineWidth);
     if(lineWidth == 1){
         efLine(x1,y1,x2,y2);
     } else {
         brushLine(x1,y1,x2,y2);
     }
-    
 }
-
-// void thickLine(int x, int y, int x2, int y2) {
-//     boolean yLonger = false;
-//     int shortLen = y2-y;
-//     int longLen = x2-x;
-//     if (abs(shortLen)>abs(longLen)) {
-//         int swap = shortLen;
-//         shortLen = longLen;
-//         longLen = swap;              
-//         yLonger = true;
-//     }
-//     int decInc;
-//     if (longLen == 0) {decInc=0;}
-//     else{ decInc = (shortLen << 8) / longLen;}
-//  
-//     if (yLonger) {
-//         if (longLen>0) {
-//             longLen += y;
-//             for (int j=0x80+(x<<8);y<=longLen;++y) {
-//                 bCircle(j >> 8,y,lineWidth);   
-//                 j+=decInc;
-//             }
-//             return;
-//         }
-//         longLen += y;
-//         for (int j=0x80+(x<<8);y>=longLen;--y) {
-//             bCircle(j >> 8,y,lineWidth);   
-//             j -= decInc;
-//         }
-//         return;
-//     }
-//  
-//     if (longLen>0) {
-//         longLen += x;
-//         for (int j=0x80+(y<<8);x<=longLen;++x) {
-//             bCircle(x,j >> 8,lineWidth);
-//             j+=decInc;
-//         }
-//         return;
-//     }
-//     longLen += x;
-//     for (int j=0x80+(y<<8);x>=longLen;--x) {
-//         bCircle(x,j >> 8,lineWidth);
-//         j-=decInc;
-//     }
-// }
 
 void brushLine(int x, int y, int x2, int y2) {
     boolean yLonger = false;
@@ -200,7 +145,6 @@ void brushLine(int x, int y, int x2, int y2) {
     int decInc;
     if (longLen == 0) {decInc=0;}
     else{ decInc = (shortLen << 8) / longLen;}
- 
     if (yLonger) {
         if (longLen>0) {
             longLen += y;
@@ -217,7 +161,6 @@ void brushLine(int x, int y, int x2, int y2) {
         }
         return;
     }
- 
     if (longLen>0) {
         longLen += x;
         for (int j=0x80+(y<<8);x<=longLen;++x) {
@@ -231,6 +174,5 @@ void brushLine(int x, int y, int x2, int y2) {
         drawBrush(x,j >> 8,lineWidth);
         j-=decInc;
     }
- 
 }
 
