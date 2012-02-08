@@ -93,12 +93,8 @@
 	   	
 	void mousePressed() {
         saveUndoState();
-      if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
-      if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
-      //       line(mouseX,mouseY,mouseX,mouseY);
-      // frames[currentFrame].line(mouseX,mouseY,mouseX,mouseY);
-      pencilLine(mouseX,mouseY,mouseX,mouseY);   
-      
+      if(mouseButton == LEFT)   {pencilLine(mouseX,mouseY,mouseX,mouseY,0);   };
+      if(mouseButton == RIGHT)  {pencilLine(mouseX,mouseY,mouseX,mouseY,1);   };
     };
     
     void mouseReleased(){
@@ -108,11 +104,8 @@
     }
 	
 	void mouseDragged() {  
-      if(mouseButton == LEFT)   {setStrokeColour(window.leftColour[0],window.leftColour[1],window.leftColour[2])};
-      if(mouseButton == RIGHT)  {setStrokeColour(window.rightColour[0],window.rightColour[1],window.rightColour[2])};
-        // line(pmouseX,pmouseY,mouseX,mouseY);
-        // frames[currentFrame].line(pmouseX,pmouseY,mouseX,mouseY);
-        pencilLine(pmouseX,pmouseY,mouseX,mouseY);   
+        if(mouseButton == LEFT)   {pencilLine(pmouseX,pmouseY,mouseX,mouseY,0);   };
+        if(mouseButton == RIGHT)  {pencilLine(pmouseX,pmouseY,mouseX,mouseY,1);   };
 	};
 	
 	void keyPressed() {
@@ -212,12 +205,12 @@
         setBrushWidth(parseInt(value));
     };
 
-    void setStrokeColour(R,G,B){
-        stroke(R,G,B);
-        for (var i=0; i < frames.length; i++) {
-            frames[i].stroke(R,G,B);
-        }
-    };
+    // void setStrokeColour(R,G,B){
+    //     stroke(R,G,B);
+    //     for (var i=0; i < frames.length; i++) {
+    //         frames[i].stroke(R,G,B);
+    //     }
+    // };
     
     void grabColour(){
         grabbed = get(mouseX,mouseY);
