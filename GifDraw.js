@@ -12,7 +12,7 @@
     window.leftColour  = [0,0,0];
     window.rightColour = [204,204,204];
     
-    lineWidth = $('#size').val(parseInt($('#size').val()));
+    lineWidth = $('#size').val();
     
     
 
@@ -22,6 +22,7 @@
 		fill(0);
 		strokeWeight(5);
         init(5);
+        setStrokeWeight(lineWidth);
 	};
 	
 	void draw() {
@@ -35,7 +36,7 @@
         console.log(animationLength);
     	frames=new Array(animationLength);
     	console.log(frames);
-        onionSkin = true;
+        onionSkin = $('#onionSkin').is(":checked");
     	totalFrames = frames.length;
     	console.log(totalFrames);
         window.totalFramesForEncoder = totalFrames;
@@ -122,6 +123,8 @@
         if (key == 122) { retrieveUndoState(); };
         // i
         if (key == 105) { grabColour(); };
+        // f
+        if (key == 102) { floodFill(mouseX,mouseY,window.leftColour[0],window.leftColour[1],window.leftColour[2]); };
 		
 		if (key == CODED) {
 		    if (keyCode == LEFT)    {prevFrame();}
@@ -205,12 +208,14 @@
         setBrushWidth(parseInt(value));
     };
 
-    // void setStrokeColour(R,G,B){
-    //     stroke(R,G,B);
-    //     for (var i=0; i < frames.length; i++) {
-    //         frames[i].stroke(R,G,B);
-    //     }
-    // };
+    void setStrokeColour(R,G,B){
+        setBrushWidth(parseInt(lineWidth));
+        console.log("colset");
+        // stroke(R,G,B);
+        // for (var i=0; i < frames.length; i++) {
+        //     frames[i].stroke(R,G,B);
+        // }
+    };
     
     void grabColour(){
         grabbed = get(mouseX,mouseY);

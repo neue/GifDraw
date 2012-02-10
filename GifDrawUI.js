@@ -31,7 +31,8 @@ $(document).ready(function() {
             window.leftColour[0] = rgb.r;
             window.leftColour[1] = rgb.g;
             window.leftColour[2] = rgb.b;
-            window.pjsin.setStrokeColour(rgb.r,rgb.g,rgb.b);
+            // window.pjsin.setStrokeColour(rgb.r,rgb.g,rgb.b);
+            window.pjsin.setStrokeWeight($('#size').val());
         }
     });
     
@@ -40,6 +41,7 @@ $(document).ready(function() {
             window.rightColour[0] = rgb.r;
             window.rightColour[1] = rgb.g;
             window.rightColour[2] = rgb.b;
+            window.pjsin.setStrokeWeight($('#size').val());
         }
     });
     
