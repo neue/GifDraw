@@ -2,7 +2,6 @@ PGraphics floodCanvas = createGraphics(canvasWidth,canvasHeight);
 
 void floodFill(int x,int y,int R,int G,int B){
     console.log("Flooding");
-    saveUndoState();
     floodCanvas = createGraphics(canvasWidth,canvasHeight);
     floodCanvas = frames[currentFrame].get();
     flood(
@@ -13,7 +12,8 @@ void floodFill(int x,int y,int R,int G,int B){
     floodCanvas.updatePixels();
     // image(floodCanvas,0,0);
     frames[currentFrame].image(floodCanvas);
-    switchFrame(currentFrame);
+    //switchFrame(currentFrame); < Undo not possible if we use this, so workaround is below
+    redrawFrame(currentFrame);
     
     
 }
