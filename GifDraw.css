@@ -1,8 +1,0 @@
-body {
-	background-image: url('./img/Background.gif');
-}
-
-#drawcanvas {
-    cursor: url('./img/pencil.cur'), crosshair;
-    image-rendering: -webkit-optimize-contrast;
-}
