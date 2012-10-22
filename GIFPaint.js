@@ -135,7 +135,9 @@
         if (key == 105) { grabColour(); };
         // f
         if (key == 102) { saveUndoState(); floodFill(mouseX,mouseY,window.leftColour[0],window.leftColour[1],window.leftColour[2]); };
-		
+		// r
+		if (key == 114) { $('#leftColour').miniColors('value',hex(color(random(255),random(255),random(255)),6))};
+
 		if (key == CODED) {
 		    if (keyCode == LEFT)    {prevFrame();}
 		    if (keyCode == RIGHT)   {nextFrame();}
