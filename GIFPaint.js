@@ -56,11 +56,15 @@
     
     void resetFrameData(targetFrame){
     	totalFrames = frames.length;
-    	console.log(totalFrames);
         window.totalFramesForEncoder = totalFrames;
     	$("#framenumber").attr("max",totalFrames-1);
     	$("#framenumber").val(currentFrame);  
-        switchFrame(targetFrame);      
+		if(targetFrame < 0){
+			switchFrame(0);      
+		} else {
+			switchFrame(targetFrame); 
+		}
+        
     };
     
     void addFrame(){
@@ -69,6 +73,7 @@
         framesAfter     = frames.splice(0,frames.length);
         framesBefore.push(null);
         framesBefore[framesBefore.length-1] = createGraphics(canvasWidth,canvasHeight,RGB);
+        framesBefore[framesBefore.length-1].background(rightColour[0],rightColour[1],rightColour[2]);
         framesBefore[framesBefore.length-1].strokeWeight(5);
         framesBefore[framesBefore.length-1].stroke(0);
         framesBefore[framesBefore.length-1].fill(255,0,0);
@@ -103,6 +108,9 @@
         // HACK
         frames[currentFrame].loadPixels();
         // END HACK
+		
+		redrawFrame(currentFrame); // Redraw Onion Skin
+		
         
     }
 	
