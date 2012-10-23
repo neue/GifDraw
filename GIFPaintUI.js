@@ -76,6 +76,32 @@ $(document).ready(function() {
     $('#undo').bind('click', function(event) {
        window.pjsin.retrieveUndoState();
     });
+
+//
+//	New GIF Modal
+//
+
+    $('#showModal').bind('click', function(event) {
+       	$('#newGifModal').addClass('in ');
+		// console.log(window.pjsin.externals.sketch.options.globalKeyEvents);
+		// window.pjsin.externals.sketch.options.globalKeyEvents = true;
+		// console.log(window.pjsin.externals.sketch.options.globalKeyEvents);
+    });
+
+	$('#closeModal').click(function() {
+		$('#newGifModal').removeClass('in');
+	});
+	
+	$('#initNewGif').click(function() {
+		window.pjsin.init(
+			parseInt($('#newGifWidth').val()),
+			parseInt($('#newGifHeight').val()),
+			parseInt($('#newGifFrames').val())
+		);
+		$('#newGifModal').removeClass('in');
+		
+	});
+
     
 //
 //  Encoder

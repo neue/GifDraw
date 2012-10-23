@@ -1,4 +1,3 @@
-/* @pjs globalKeyEvents="true"; */
 
     window.pjsin = Processing.getInstanceById("drawcanvas");
 
@@ -17,11 +16,10 @@
     
 
 	void setup(){  
-		size(canvasWidth,canvasHeight);  
 		stroke(0);
 		fill(0);
 		strokeWeight(5);
-        init(5);
+        init(canvasWidth,canvasHeight,5);
         setStrokeWeight(lineWidth);
 	};
 	
@@ -29,7 +27,16 @@
 	    
 	};
 
-    void init(animationLength){
+    void init(initWidth,initHeight,animationLength){
+		canvasWidth  = initWidth;
+		canvasHeight = initHeight;
+		
+		size(canvasWidth,canvasHeight);  
+		
+		clipboard       = createGraphics(canvasWidth,canvasHeight,RGB);
+		undo            = createGraphics(canvasWidth,canvasHeight,RGB);
+		
+	
         console.log("New Gif with "+animationLength+" frames");
         currentFrame = 0;
         frames= null;
