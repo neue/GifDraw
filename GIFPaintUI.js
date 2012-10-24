@@ -5,6 +5,9 @@ $(document).ready(function() {
     canvas.onselectstart = function () { return false; } // ie
     canvas.onmousedown = function () { return false; } // mozilla
         
+	$('#drawcanvas').mouseover(function() {	canvas.focus();	});
+	$('#drawcanvas').mouseout(function()  {	canvas.blur();	});
+
 //     
 //  Tools 
 // 
@@ -50,6 +53,8 @@ $(document).ready(function() {
 //  Documents
 //
     
+	
+
     $('#newgif').bind('click', function(event) {
         var numberOfFrames = prompt("How many frames should this AWESOME gif have?",window.totalFramesForEncoder);
         if (numberOfFrames) {
@@ -111,7 +116,6 @@ $(document).ready(function() {
     encoder.setRepeat(0);
     encoder.setDelay(100); 
     encoder.setQuality(10);
-    var canvas = document.getElementById('drawcanvas');
     var context = canvas.getContext('2d');
    
     $('#encode').bind('click', function(event) {
