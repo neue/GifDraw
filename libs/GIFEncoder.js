@@ -7,6 +7,14 @@
 */
 
 
+	//import flash.utils.ByteArray;
+	//import flash.display.BitmapData;
+	//import flash.display.Bitmap;
+	//import org.bytearray.gif.encoder.NeuQuant
+	//import flash.net.URLRequestHeader;
+	//import flash.net.URLRequestMethod;
+	//import flash.net.URLRequest;
+	//import flash.net.navigateToURL;
 	
 	GIFEncoder = function()
 	{
@@ -50,7 +58,7 @@
 	    /*private*/ var colorDepth/*int*/; // number of bit planes
 	    /*private*/ var colorTab/*ByteArray*/; // RGB palette
 	    /*private*/ var usedEntry/*Array*/ = new Array; // active palette entries
-	    /*private*/ var palSize/*int*/ = 50; // color table size (bits-1)
+	    /*private*/ var palSize/*int*/ = 7; // color table size (bits-1)
 	    /*private*/ var dispose/*int*/ = -1; // disposal code (-1 = use default)
 	    /*private*/ var closeStream/*Boolean*/ = false; // close stream when finished
 	    /*private*/ var firstFrame/*Boolean*/ = true;
@@ -128,7 +136,8 @@
 		*/
 		
 		var addFrame = exports.addFrame = function addFrame(im/*BitmapData*/, is_imageData)/*Boolean*/
-		{			
+		{
+			
 			if ((im == null) || !started || out == null) 
 			{
 				throw new Error ("Please call start method before calling addFrame");
@@ -284,6 +293,18 @@
 		    } catch (e/*Error*/) {
 		      ok = false;
 		    }
+			
+		    return started = ok;
+			
+		}
+		
+		var cont = exports.cont = function cont()/*Boolean*/
+		{
+			
+		    reset(); 
+		    var ok/*Boolean*/ = true;
+		    closeStream = false;
+		    out = new ByteArray;
 			
 		    return started = ok;
 			
@@ -525,6 +546,7 @@
 		var setProperties = exports.setProperties = function setProperties(has_start, is_first){
 		  started = has_start;
 		  firstFrame = is_first;
+		  //out = new ByteArray; //??
 		}
 		
 		return exports
