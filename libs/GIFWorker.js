@@ -34,7 +34,7 @@ self.onmessage = function(event) {
   else
   {
     //alert();
-    encoder.cont();
+    encoder.contted();
     encoder.setProperties(true, false); //started, firstFrame
   }
 

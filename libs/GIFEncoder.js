@@ -298,7 +298,7 @@
 			
 		}
 		
-		var cont = exports.cont = function cont()/*Boolean*/
+		var contted = exports.contted = function contted()/*Boolean*/
 		{
 			
 		    reset(); 
