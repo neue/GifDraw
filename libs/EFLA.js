@@ -93,12 +93,10 @@ void setBrushWidth(int newLineWidth){
     
     buildBrush(leftBrush,window.leftColour[0],window.leftColour[1],window.leftColour[2]);
     buildBrush(rightBrush,window.rightColour[0],window.rightColour[1],window.rightColour[2]);
-    console.log("EFLA Width:"+lineWidth);
     image(leftBrush,40,40);
     image(rightBrush,140,40);
 }
 void buildBrush(PGraphics brushToBuild, int R, int G, int B){
-    console.log(brushToBuild);
     brushToBuild.background(0,0,0,0);
     // Set special case square brush
     if (lineWidth == 2) {
@@ -140,7 +138,15 @@ void pencilLine(int x1,int y1,int x2,int y2, int mouseBut){
     };
 }
 
+void distance(int x, int y, int x2, int y2){
+	double a = x - x2;
+	double b = y - y2;
+	double distance = Math.sqrt(a * a + b * b);
+	return distance;
+}
+
 void brushLine(int x, int y, int x2, int y2, PGraphics brushCanvas) {
+	
     boolean yLonger = false;
     int shortLen = y2-y;
     int longLen = x2-x;
@@ -182,5 +188,8 @@ void brushLine(int x, int y, int x2, int y2, PGraphics brushCanvas) {
         drawBrush(x,j >> 8,brushCanvas);
         j-=decInc;
     }
+
+
+
 }
 

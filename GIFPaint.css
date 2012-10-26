@@ -3,6 +3,18 @@ body {
 }
 
 #drawcanvas {
-    cursor: url('./img/pencil.cur'), crosshair;
     image-rendering: -webkit-optimize-contrast;
 }
+
+#drawcanvas.paint {
+    cursor: url('./img/Paint.cur'), crosshair;	
+}
+
+#drawcanvas.fill {
+    cursor: url('./img/FillBucket.cur') 2 32,crosshair;	
+}
+
+#drawcanvas.inkdropper {
+    cursor: url('./img/InkDropper.cur') 0 32, crosshair;	
+}
+
