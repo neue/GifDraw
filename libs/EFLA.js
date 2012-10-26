@@ -140,7 +140,15 @@ void pencilLine(int x1,int y1,int x2,int y2, int mouseBut){
     };
 }
 
+void distance(int x, int y, int x2, int y2){
+	double a = x - x2;
+	double b = y - y2;
+	double distance = Math.sqrt(a * a + b * b);
+	return distance;
+}
+
 void brushLine(int x, int y, int x2, int y2, PGraphics brushCanvas) {
+	
     boolean yLonger = false;
     int shortLen = y2-y;
     int longLen = x2-x;
@@ -182,5 +190,8 @@ void brushLine(int x, int y, int x2, int y2, PGraphics brushCanvas) {
         drawBrush(x,j >> 8,brushCanvas);
         j-=decInc;
     }
+
+
+
 }
 

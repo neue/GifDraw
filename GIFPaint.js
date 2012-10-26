@@ -129,9 +129,13 @@
 	void keyPressed() {
         // console.log(key);
         // +
-        if (key == 61) { $('#size').val(parseInt($('#size').val())+1).change(); };
+        if (key == 61) { $('#size').val(parseInt($('#size').val())+1).change();
+	 		setStrokeWeight(parseInt($('#size').val())); 
+		};
         // -
-        if (key == 45) { $('#size').val(parseInt($('#size').val())-1).change(); };
+        if (key == 45) { $('#size').val(parseInt($('#size').val())-1).change();
+			setStrokeWeight(parseInt($('#size').val())); 
+		};
         // c
 		if (key == 99) { clipboardCopy(); };
         // p
