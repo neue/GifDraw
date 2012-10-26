@@ -28,7 +28,7 @@
 <div class="container">
   	<div class="row">&nbsp;</div>
 	<div class="row">
-		<canvas id="drawcanvas" data-processing-sources="GIFPaint.js libs/EFLA.js libs/FloodFill.js"></canvas>		
+		<canvas id="drawcanvas" class="paint" data-processing-sources="GIFPaint.js libs/EFLA.js libs/FloodFill.js"></canvas>		
 	</div>
 	
 	<div class="row">
@@ -49,8 +49,16 @@
 		</form>
 		</div>
 		<div class="span6">
-				<input type="input" class="span2" id="leftColour" name="leftColour" value="#000000" />
-				<input type="input" class="span2" id="rightColour" name="rightColour" value="#C0C0C0" />
+				<div>
+					<input type="input" class="span2" id="leftColour" name="leftColour" value="#000000" />
+					<input type="input" class="span2" id="rightColour" name="rightColour" value="#C0C0C0" />					
+				</div>
+				<div>
+					<button class="btn btn-info" id="tool_paint">Paint</button>					
+					<button class="btn btn-info" id="tool_fill">Fill</button>					
+					<button class="btn btn-info" id="tool_ink">Inkdropper</button>					
+				</div>
+				
 		</div>
 	</div>
 	<div class="well">

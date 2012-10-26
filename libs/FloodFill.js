@@ -1,12 +1,20 @@
 PGraphics floodCanvas = createGraphics(canvasWidth,canvasHeight);
 
-void floodFill(int x,int y,int R,int G,int B){
+void floodFill(int x,int y,int x2,int y2,int mouseBut){
     console.log("Flooding");
     floodCanvas = createGraphics(canvasWidth,canvasHeight);
     floodCanvas = frames[currentFrame].get();
+	
+	if (mouseBut == 0) {
+		var floodColour = color(window.leftColour[0],window.leftColour[1],window.leftColour[2]);		
+	} else {
+		var floodColour = color(window.rightColour[0],window.rightColour[1],window.rightColour[2]);		
+	}
+	
+	
     flood(
         new Vec2D(mouseX,mouseY),
-        color(R,G,B),
+        floodColour,
         floodCanvas.get(mouseX,mouseY)
     );
     floodCanvas.updatePixels();

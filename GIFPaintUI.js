@@ -47,6 +47,21 @@ $(document).ready(function() {
             window.pjsin.setStrokeWeight($('#size').val());
         }
     });
+
+	// Tool Selection
+	
+	$('#tool_paint').click(function() { 
+		window.pjsin.setTool(0); 
+		$('#drawcanvas').attr('class','paint');
+	});
+	$('#tool_fill').click(function()  { 
+		window.pjsin.setTool(1); 
+		$('#drawcanvas').attr('class','fill');
+	});
+	$('#tool_ink').click(function()   { 
+		window.pjsin.setTool(2); 
+		$('#drawcanvas').attr('class','inkdropper');
+	});
     
     
 //

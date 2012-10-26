@@ -104,26 +104,48 @@
         }
     };
 	   	
+	var mouseClickTool = pencilLine;
+	var mouseDragTool  = pencilLine;
+	//var toolArray = [pencilLine,floodFill,inkDropper];
+	void setTool(int tool){
+		switch(tool){
+			case 0:
+				console.log("Paint");
+				mouseClickTool = pencilLine;
+				mouseDragTool  = pencilLine;
+			break;
+			case 1:
+				console.log("Fill");
+				mouseClickTool = floodFill;
+				mouseDragTool  = null;
+			break;
+			case 2:
+				console.log("InkDropper");
+				mouseClickTool = inkDropper;
+				mouseDragTool  = inkDropper;
+			break;
+		default:
+			mouseClickTool = pencilLine;
+			mouseDragTool  = pencilLine;
+		}
+	}
+	
 	void mousePressed() {
         saveUndoState();
-        if(mouseButton == LEFT)   {pencilLine(mouseX,mouseY,mouseX,mouseY,0);   };
-        if(mouseButton == RIGHT)  {pencilLine(mouseX,mouseY,mouseX,mouseY,1);   };
+        if(mouseButton == LEFT)   {mouseClickTool(mouseX,mouseY,mouseX,mouseY,0);   };
+        if(mouseButton == RIGHT)  {mouseClickTool(mouseX,mouseY,mouseX,mouseY,1);   };
     };
     
     void mouseReleased(){
-        
         // HACK
         frames[currentFrame].loadPixels();
         // END HACK
-		
 		redrawFrame(currentFrame); // Redraw Onion Skin
-		
-        
     }
 	
 	void mouseDragged() {  
-        if(mouseButton == LEFT)   {pencilLine(pmouseX,pmouseY,mouseX,mouseY,0);   };
-        if(mouseButton == RIGHT)  {pencilLine(pmouseX,pmouseY,mouseX,mouseY,1);   };
+        if(mouseButton == LEFT)   {mouseDragTool(pmouseX,pmouseY,mouseX,mouseY,0);   };
+        if(mouseButton == RIGHT)  {mouseDragTool(pmouseX,pmouseY,mouseX,mouseY,1);   };
 	};
 	
 	void keyPressed() {
@@ -143,7 +165,7 @@
         // z
         if (key == 122) { retrieveUndoState(); };
         // i
-        if (key == 105) { grabColour(); };
+        if (key == 105) { inkDropper(mouseX,mouseY); };
         // f
         if (key == 102) { saveUndoState(); floodFill(mouseX,mouseY,window.leftColour[0],window.leftColour[1],window.leftColour[2]); };
 		// r
@@ -249,9 +271,13 @@
         // }
     };
     
-    void grabColour(){
-        grabbed = get(mouseX,mouseY);
-        $('#leftColour').miniColors('value',hex(grabbed,6));
+    void inkDropper(int x,int y,int x2, int y2, int mouseBut){
+        grabbed = get(x,y);
+		if (mouseBut == 0) {
+	        $('#leftColour').miniColors('value',hex(grabbed,6));			
+		} else {
+	        $('#rightColour').miniColors('value',hex(grabbed,6));					
+		}
         
     };
 
