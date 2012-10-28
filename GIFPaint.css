@@ -4,6 +4,7 @@ body {
 
 #drawcanvas {
     image-rendering: -webkit-optimize-contrast;
+	float: left;
 }
 
 #drawcanvas.paint {
@@ -18,3 +19,22 @@ body {
     cursor: url('./img/InkDropper.cur') 0 32, crosshair;	
 }
 
+.hidden { display: none; }	
+
+#dropzone {
+	background-color: #CDCDCD;
+	border: 2px solid #9A9A9A;
+	float: left;
+	display: block;
+	width: 200px;
+	height: 110px;
+	margin-left: 40px;
+	padding-top: 90px;
+	text-align: center;
+	
+}
+
+#dropzone.drag {
+	background-color: #6AC1DD;
+	border: 2px solid #2F9DB9;
+}

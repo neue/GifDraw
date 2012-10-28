@@ -122,6 +122,47 @@ $(document).ready(function() {
 		
 	});
 
+//
+//	Importer
+//
+	
+	var opts = {
+	    dragClass: "drag",
+	    accept: false,
+	    readAsMap: {
+	        'image/*': 'DataURL',
+	        'text/*' : 'Text'
+	    },
+	    readAsDefault: 'BinaryString',
+	    on: {
+	        load: function(e, file) {
+		        if (file.type.match(/image/)) {
+					console.log(file.name);
+					console.log(file.type);
+					window.pjsin.importImg(e.target.result);
+				} else {
+					// Not an image
+				};
+	    	},
+	        error: function(e, file) {
+	    	},
+	        loadend: function(e, file) {
+	    	},
+	        abort: function(e, file) {
+	    	},
+	        skip: function(e, file) {
+	    	},
+	        groupstart: function(group) {
+	    	},
+	        groupend: function(group) {
+	    	}
+	    }
+	};
+	$("#dropzone").fileReaderJS(opts);
+	$("body").fileClipboard(opts);
+	
+	
+
     
 //
 //  Encoder
