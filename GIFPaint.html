@@ -5,23 +5,15 @@
 	<title>GIFPaint</title>
 
 	<link rel="stylesheet" href="libs/bootstrap.min.css" type="text/css">
-<script src="libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-
+	<script src="libs/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="libs/processing-1.4.1.min.js" type="text/javascript"></script>	
+	<script src="./libs/jquery.miniColors.min.js" type="text/javascript"></script>
+	<script src="libs/filereader.min.js" type="text/javascript"></script>
+	<script src="GIFPaintUI.js" type="text/javascript"></script>
 
 
 	<link rel="stylesheet" href="./libs/jquery.miniColors.css" type="text/css">
-	<script src="./libs/jquery.miniColors.min.js" type="text/javascript"></script>
-
-
-
-	<link rel="stylesheet" href="GIFPaint.css" type="text/css">    
-	<script src="GIFPaintUI.js" type="text/javascript"></script>
-	
-	<style type="text/css" media="screen">
-		.hidden { display: none; }	
-	</style>
-	
+	<link rel="stylesheet" href="GIFPaint.css" type="text/css">    	
 	
 </head>
 <body>
@@ -29,6 +21,9 @@
   	<div class="row">&nbsp;</div>
 	<div class="row">
 		<canvas id="drawcanvas" class="paint" data-processing-sources="GIFPaint.js libs/EFLA.js libs/FloodFill.js"></canvas>		
+		<div id="dropzone">
+			Drop File Here
+		</div>
 	</div>
 	
 	<div class="row">

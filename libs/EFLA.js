@@ -93,8 +93,6 @@ void setBrushWidth(int newLineWidth){
     
     buildBrush(leftBrush,window.leftColour[0],window.leftColour[1],window.leftColour[2]);
     buildBrush(rightBrush,window.rightColour[0],window.rightColour[1],window.rightColour[2]);
-    image(leftBrush,40,40);
-    image(rightBrush,140,40);
 }
 void buildBrush(PGraphics brushToBuild, int R, int G, int B){
     brushToBuild.background(0,0,0,0);
@@ -114,12 +112,12 @@ void buildBrush(PGraphics brushToBuild, int R, int G, int B){
 
 
 void drawBrush(x,y,PGraphics brushCanvas){
-    imageMode(CENTER);
-    frames[currentFrame].imageMode(CENTER);
-    image(brushCanvas,x,y);
-    frames[currentFrame].image(brushCanvas,x,y);
-    imageMode(CORNER);
-    frames[currentFrame].imageMode(CORNER);
+	    imageMode(CENTER);
+	    frames[currentFrame].imageMode(CENTER);
+	    image(brushCanvas,x,y);
+	    frames[currentFrame].image(brushCanvas,x,y);
+	    imageMode(CORNER);
+	    frames[currentFrame].imageMode(CORNER);
 }
 
 void pencilLine(int x1,int y1,int x2,int y2, int mouseBut){
@@ -138,6 +136,7 @@ void pencilLine(int x1,int y1,int x2,int y2, int mouseBut){
     };
 }
 
+// DEBUG
 void distance(int x, int y, int x2, int y2){
 	double a = x - x2;
 	double b = y - y2;

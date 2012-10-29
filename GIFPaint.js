@@ -164,10 +164,12 @@
         if (key == 112) { clipboardPaste(); };
         // z
         if (key == 122) { retrieveUndoState(); };
+        // b
+        if (key == 98) { $('#tool_paint').click(); };
         // i
-        if (key == 105) { inkDropper(mouseX,mouseY); };
+        if (key == 105) { $('#tool_ink').click(); };
         // f
-        if (key == 102) { saveUndoState(); floodFill(mouseX,mouseY,window.leftColour[0],window.leftColour[1],window.leftColour[2]); };
+        if (key == 102) { $('#tool_fill').click(); };
 		// r
 		if (key == 114) { $('#leftColour').miniColors('value',hex(color(random(255),random(255),random(255)),6))};
 
@@ -186,7 +188,6 @@
 	
 	void gotoFrame(framenum){
 	    undoPossible = false;
-	    console.log("Going to Frame "+framenum);
 		image(frames[framenum],0,0);
 		if (onionSkin) {
             tint(255, 50);
@@ -264,7 +265,6 @@
 
     void setStrokeColour(R,G,B){
         setBrushWidth(parseInt(lineWidth));
-        console.log("colset");
         // stroke(R,G,B);
         // for (var i=0; i < frames.length; i++) {
         //     frames[i].stroke(R,G,B);
@@ -308,5 +308,17 @@
 		undoPossible = false;
 	}
 	
-	
+// 
+//	Importing
+//
+
+PImage importedImage;
+void importImg(uri){
+	console.log("Importing Image");
+	importedImage = loadImage(uri, null, function(){
+	    frames[currentFrame].image(importedImage,0,0);
+	    redrawFrame(currentFrame);
+	});	
+}
+
 	
