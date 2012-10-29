@@ -21,20 +21,16 @@ body {
 
 .hidden { display: none; }	
 
-#dropzone {
-	background-color: #CDCDCD;
+
+#drawcanvas {
 	border: 2px solid #9A9A9A;
-	float: left;
-	display: block;
-	width: 200px;
-	height: 110px;
-	margin-left: 40px;
-	padding-top: 90px;
-	text-align: center;
-	
 }
 
-#dropzone.drag {
-	background-color: #6AC1DD;
-	border: 2px solid #2F9DB9;
+#drawcanvas:focus {
+	outline: none;
+	border-color: #333333;
+}
+
+#drawcanvas.drag {
+	border-color: #2F9DB9;
 }

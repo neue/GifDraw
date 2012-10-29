@@ -158,7 +158,7 @@ $(document).ready(function() {
 	    	}
 	    }
 	};
-	$("#dropzone").fileReaderJS(opts);
+	$("#drawcanvas").fileReaderJS(opts);
 	$("body").fileClipboard(opts);
 	
 	
