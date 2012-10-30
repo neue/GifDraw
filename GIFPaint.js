@@ -316,7 +316,10 @@ PImage importedImage;
 void importImg(uri){
 	console.log("Importing Image");
 	importedImage = loadImage(uri, null, function(){
-	    frames[currentFrame].image(importedImage,0,0);
+		
+	    frames[currentFrame].imageMode(CENTER);	    
+	    frames[currentFrame].image(importedImage,canvasWidth/2,canvasHeight/2);
+	    frames[currentFrame].imageMode(CORNER);
 	    redrawFrame(currentFrame);
 	});	
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta/>
+	<title>GIFLoad</title>
+	<script src="libs/processing-1.4.1.js" type="text/javascript"></script>
+	<script src="libs/jquery.min.js" type="text/javascript"></script>
+	<script src="libs/filereader.min.js" type="text/javascript"></script>
+	<script src="libs/libgifReader.js" type="text/javascript"></script>
+	
+	<script src="GIFLoad.js" type="text/javascript"></script>
+
+	<style type="text/css" media="screen">
+		#drawcanvas {
+			border: 2px solid #9A9A9A;
+		}
+
+
+		#drawcanvas.drag {
+			border-color: #2F9DB9;
+		}
+	</style>
+
+</head>
+<body>
+
+<canvas id="drawcanvas" data-processing-sources="GIFLoadPDE.js"></canvas>
+
+<div>
+	<img src="img/1BitSpinner.gif" width="500" height="500" id="dummy" rel:auto_play="1">
+	
+</div>
+
+</body>
+</html>
