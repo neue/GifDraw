@@ -144,6 +144,7 @@ void distance(int x, int y, int x2, int y2){
 	return distance;
 }
 
+// EFLA
 void brushLine(int x, int y, int x2, int y2, PGraphics brushCanvas) {
 	
     boolean yLonger = false;
@@ -190,5 +191,71 @@ void brushLine(int x, int y, int x2, int y2, PGraphics brushCanvas) {
 
 
 
+}
+
+
+// DDA Line
+void brushLineDDA(int x1, int y1, int x2, int y2, PGraphics brushCanvas) {
+  int length,i;
+  double x,y;
+  double xincrement;
+  double yincrement;
+  console.log("hello");
+  length = abs(x2 - x1);
+  if (abs(y2 - y1) > length) length = abs(y2 - y1);
+  xincrement = (double)(x2 - x1)/(double)length;
+  yincrement = (double)(y2 - y1)/(double)length;
+  x = x1 + 0.5; 
+  y = y1 + 0.5;
+  for (i = 1; i<= length;++i) {
+     drawBrush(x,y,brushCanvas);
+     x = x + xincrement;
+     y = y + yincrement;
+  }
+
+}
+
+// Bresenhams
+
+void brushLineBresenhams(int x0, int y0, int x1, int y1, PGraphics brushCanvas) {
+	int error;
+	int dx = x1 - x0;
+	int dy = y1 - y0;
+	int yi = 1;
+	if( dx < dy ){
+		x0 ^= x1; x1 ^= x0; x0 ^= x1;
+		y0 ^= y1; y1 ^= y0; y0 ^= y1;
+	}
+ 
+	if( dx < 0 ){
+		dx = -dx; yi = -yi;
+	}
+ 
+	if( dy < 0 ){
+		dy = -dy; yi = -yi;
+	}
+ 
+	if( dy > dx ){
+		error = -( dy >> 1 );
+		for( ; y1 < y0 ; y1++ )	{
+			drawBrush(x1,y1,brushCanvas);
+			error += dx;
+			if( error > 0 ){
+				x1 += yi;
+				error -= dy;
+			}
+		}
+	} else {
+		error = -( dx >> 1 );
+ 
+		for( ; x0 < x1 ; x0++ ) {
+			drawBrush(x0,y0,brushCanvas);
+			error += dy;
+			if( error > 0 ) {
+				y0 += yi;
+				error -= dx;
+			}
+		}
+	}
 }
 

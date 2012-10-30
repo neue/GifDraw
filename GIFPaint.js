@@ -40,9 +40,7 @@
         console.log("New Gif with "+animationLength+" frames");
         currentFrame = 0;
         frames= null;
-        console.log(animationLength);
     	frames=new Array(animationLength);
-    	console.log(frames);
         onionSkin = $('#onionSkin').is(":checked");
     	totalFrames = frames.length;
     	console.log(totalFrames);
@@ -322,6 +320,18 @@ void importImg(uri){
 	    frames[currentFrame].imageMode(CORNER);
 	    redrawFrame(currentFrame);
 	});	
+}
+
+void setupImportedGif(newGifWidth,newGifHeight,newGifLength){
+    init(newGifWidth,newGifHeight,newGifLength);
+    importedFrame = createImage(newGifWidth, newGifHeight, RGB);
+}
+
+PImage importedFrame;
+void importFrame(frameData,frameNumber){
+    importedFrame.fromImageData(frameData);
+    gotoFrame(frameNumber);
+    frames[frameNumber].image(importedFrame,0,0);
 }
 
 	

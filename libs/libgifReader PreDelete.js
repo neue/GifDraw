@@ -413,9 +413,19 @@ var SuperGif = function ( options ) {
 
 	var playing = true;
 	var forward = true;
+	// var ctx_scaled = false;
 
 	var frames = [];
-		
+	
+
+    // var gif = options.gif;
+	// if (typeof options.auto_play == 'undefined') 
+	// 	options.auto_play = (!gif.getAttribute('rel:auto_play') || gif.getAttribute('rel:auto_play') == '1');
+	// 
+	// if (typeof options.rubbable == 'undefined') 
+	// 	options.rubbable = (!gif.getAttribute('rel:rubbable') || gif.getAttribute('rel:rubbable') == '1');
+    // options.rubbable = 1;
+	
 	var clear = function () {
 		transparency = null;
 		delay = null;
@@ -435,19 +445,53 @@ var SuperGif = function ( options ) {
 		}
 	};
 
+	var doText = function (text) {
+		toolbar.innerHTML = text; // innerText? Escaping? Whatever.
+		toolbar.style.visibility = 'visible';
+	};
+
 	var doShowProgress = function (pos, length, draw) {
-        // Progress Bar?????
+		if (draw) {
+			var height = 25;
+			var top = (canvas.height - height);
+			var mid = (pos / length) * canvas.width;
+
+			// XXX Figure out alpha fillRect.
+			//ctx.fillStyle = 'salmon';
+			ctx.fillStyle = 'rgba(255,255,255,0.4)';
+			ctx.fillRect(mid, top, canvas.width - mid, height);
+
+			//ctx.fillStyle = 'teal';
+			ctx.fillStyle = 'rgba(255,0,22,.8)';
+			ctx.fillRect(0, top, (pos / length) * canvas.width, height);
+		}
 	};
 
 	var doLoadError = function (originOfError) {
-        console.log("ERROR HIT "+originOfError);
+		var drawError = function () {
+			ctx.fillStyle = 'black';
+			ctx.fillRect(0, 0, hdr.width, hdr.height);
+			ctx.strokeStyle = 'red';
+			ctx.lineWidth = 3;
+			ctx.moveTo(0, 0);
+			ctx.lineTo(hdr.width, hdr.height);
+			ctx.moveTo(0, hdr.height);
+			ctx.lineTo(hdr.width, 0);
+			ctx.stroke();
+		};
+
 		loadError = originOfError;
-		//hdr = {	width: gif.width, height: gif.height }; // Fake header.
+		hdr = {	width: gif.width, height: gif.height }; // Fake header.
 		frames = [];
+		drawError();
 	};
 
 	var doHdr = function (_hdr) {
 		hdr = _hdr;
+		canvas.width = hdr.width;
+		canvas.height = hdr.height;
+		toolbar.style.minWidth = hdr.width + 'px';
+
 		tmpCanvas.width = hdr.width;
 		tmpCanvas.height = hdr.height;
 	};
@@ -504,8 +548,102 @@ var SuperGif = function ( options ) {
 
 		if (!firstImg) firstImg = img;
 		if (!firstCData) firstCData = cData;
+
 		frame.putImageData(cData, img.leftPos, img.topPos);
+
+        // if (!ctx_scaled)
+        // {
+        //  ctx.scale(get_canvas_scale(),get_canvas_scale());
+        //  ctx_scaled = true;
+        // }
+
+		// We could use the on-page canvas directly, except that we draw a progress
+		// bar for each image chunk (not just the final image).
+		ctx.drawImage(tmpCanvas, 0, 0);
+
 	};
+    /*
+	var player = (function () {
+		var i = -1;
+		var curFrame;
+		var delayInfo;
+
+		var showingInfo = false;
+		var pinned = false;
+
+		var stepFrame = function (delta) { // XXX: Name is confusing.
+			i = (i + delta + frames.length) % frames.length;
+			curFrame = i + 1;
+			delayInfo = frames[i].delay;
+			putFrame();
+		};
+
+		var step = (function () {
+			var stepping = false;
+
+			var doStep = function () {
+				stepping = playing;
+				if (!stepping) return;
+
+				stepFrame(forward ? 1 : -1);
+				var delay = frames[i].delay * 10;
+				if (!delay) delay = 100; // FIXME: Should this even default at all? What should it be?
+				setTimeout(doStep, delay);
+			};
+
+			return function () {
+				if (!stepping) setTimeout(doStep, 0);
+			};
+		}());
+
+		var putFrame = function () {
+			curFrame = i;
+
+			tmpCanvas.getContext("2d").putImageData(frames[i].data, 0, 0);
+
+			ctx.drawImage(tmpCanvas, 0, 0);
+
+		};
+
+		var play = function () {
+			playing = true;
+			step();
+		};
+
+		var pause = function () {
+			playing = false;
+		};
+
+
+		return {
+			init: function () {
+				if (loadError) return;
+
+				//ctx.scale(get_canvas_scale(),get_canvas_scale());
+
+				if (options.auto_play) {
+					step();
+				}
+				else {
+					i = 0;
+					putFrame();
+				}
+			},
+			current_frame: curFrame,
+			step: step,
+			play: play,
+			pause: pause,
+			playing: playing,
+			move_relative: stepFrame,
+			current_frame: function() { return i; },
+			length: function() { return frames.length },
+			move_to: function ( frame_idx ) {
+				i = frame_idx;
+				putFrame();
+			}
+		}
+	}());
+	*/
 
 	var doDecodeProgress = function (draw) {
 		//doShowProgress(stream.pos, stream.data.length, draw);
@@ -524,6 +662,68 @@ var SuperGif = function ( options ) {
 		};
 	};
 
+	var register_canvas_handers = function () {
+
+			var maxTime = 1000,
+				// allow movement if < 1000 ms (1 sec)
+				maxDistance = Math.floor(canvas.width / (player.length() * 2)),
+				// swipe movement of 50 pixels triggers the swipe
+				startX = 0,
+				startTime = 0;
+
+			var cantouch = "ontouchend" in document;
+
+			var aj = 0;
+			var last_played = 0;
+
+			var startup = function (e) {
+				// prevent image drag (Firefox)
+				e.preventDefault();
+				if (options.auto_play) player.pause();
+
+				var pos = (e.touches && e.touches.length > 0) ? e.touches[0] : e;
+
+				var x = (pos.layerX > 0) ? pos.layerX : canvas.width / 2;
+				var progress = x / canvas.width;
+
+				player.move_to( Math.floor(progress * (player.length() - 1)) );
+				
+				startTime = e.timeStamp;
+				startX = pos.pageX;
+			};
+			canvas.addEventListener((cantouch) ? 'touchstart' : 'mousedown', startup );
+
+			var shutdown = function (e) {
+				startTime = 0;
+				startX = 0;
+				if (options.auto_play) player.play();
+			};
+			canvas.addEventListener((cantouch) ? 'touchend' : 'mouseup', shutdown);
+
+			var moveprogress = function (e) {
+				e.preventDefault();
+				var pos = (e.touches && e.touches.length > 0) ? e.touches[0] : e;
+
+				var currentX = pos.pageX;
+				currentDistance = (startX === 0) ? 0 : Math.abs(currentX - startX);
+				// allow if movement < 1 sec
+				currentTime = e.timeStamp;
+				if (startTime !== 0 && currentDistance > maxDistance) {
+					if (currentX < startX && player.current_frame() > 0) {
+						player.move_relative(-1);
+					}
+					if (currentX > startX && player.current_frame() < player.length() - 1) {
+						player.move_relative(1);
+					}
+					startTime = e.timeStamp;
+					startX = pos.pageX;
+				}
+
+			};
+			canvas.addEventListener((cantouch) ? 'touchmove' : 'mousemove', moveprogress);
+		};
+
+
 	var handler = {
 		hdr: withProgress(doHdr),
 		gce: withProgress(doGCE),
@@ -535,16 +735,17 @@ var SuperGif = function ( options ) {
 		},
 		img: withProgress(doImg, true),
 		eof: function (block) {
+			//toolbar.style.display = '';
 			pushFrame();
 			doDecodeProgress(false);
-			
-            window.pjsin.setupImportedGif(frames[0].data.width,frames[0].data.height,frames.length);
 			for (var i=0; i < frames.length; i++) {
-				window.pjsin.importFrame(frames[i].data,i);
+				window.pjsin.drawImg(frames[i].data);
 			}
-            window.pjsin.gotoFrame(0);
-            
+			canvas.width = hdr.width;
+			canvas.height = hdr.height;
+			//player.init();
 			loading = false;
+			//register_canvas_handers();
 			if (load_callback)
 			{
 				load_callback();
@@ -554,19 +755,101 @@ var SuperGif = function ( options ) {
 	};
 
 	var init = function () {
+            // console.log(gif);
+            // var parent = gif.parentNode;
+            // 
+            // var div = document.createElement('div');
+			canvas = document.createElement('canvas');
+			ctx = canvas.getContext('2d');
+			toolbar = document.createElement('div');
+
 			tmpCanvas = document.createElement('canvas');
+
+            // div.width = canvas.width = gif.width;
+            // div.height = canvas.height = gif.height;
+            // toolbar.style.minWidth = gif.width + 'px';
+
+            // div.className = 'jsgif';
+            // toolbar.className = 'jsgif_toolbar';
+			//document.body.appendChild(canvas);
+            // div.appendChild(toolbar);
+
+            // parent.insertBefore(div, gif);
+            // parent.removeChild(gif);
+
 	};
 
-	var tmpCanvas;
+	var get_canvas_scale = function() {
+        // if (options.max_width && canvas.width > options.max_width)
+        // {
+        //  return options.max_width / canvas.width;
+        // }
+        // else
+        // {
+        //  return 1;
+        // }
+
+	}
+
+	var canvas, ctx, toolbar, tmpCanvas;
 	var initialized = false;
 	var load_callback = false;
 
 	return {
+		// play controls
+        // play: player.play,
+        // pause: player.pause,
+        // move_relative: player.move_relative,
+        // move_to: player.move_to,
+
+		// getters for instance vars
+		/*get_playing: function() {
+			return player.playing;
+		},
+		get_canvas: function() {
+			return canvas;
+		},
+		get_loading: function() {
+			return loading
+		},
+		get_auto_play: function() {
+			return options.auto_play;
+		},
+		get_length: function() {
+			return player.length();
+		},
+		get_current_frame: function() {
+			return player.current_frame();
+		},*/
 		load: function (callback,gifByteStream) {
+			// console.log(gifByteStream);
 			loading = true;
 			init();
 			stream = new Stream(gifByteStream);
 			setTimeout(doParse, 0);
+			
+			
+			// if (callback) load_callback = callback;
+			// loading = true;
+			// 
+			// var h = new XMLHttpRequest();
+			// h.overrideMimeType('text/plain; charset=x-user-defined');
+			// h.onloadstart = function() {
+			// 	// Wait until connection is oppened to replace the gif element with a canvas to avoid a blank img
+			// 	if (!initialized ) init();
+			// };
+			// h.onload = function(e) {
+			// 	stream = new Stream(h.responseText);
+			// 	setTimeout(doParse, 0);
+			// };
+			// h.onprogress = function (e) {
+			// 	if (e.lengthComputable) doShowProgress(e.loaded, e.total, true);
+			// };
+			// h.onerror = function() { doLoadError('xhr'); };
+			// h.open('GET', gif.getAttribute('rel:animated_src') || gif.src, true);
+			// h.send();
+
+
 		}
 	};
 

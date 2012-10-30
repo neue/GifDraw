@@ -70,12 +70,12 @@ $(document).ready(function() {
     
 	
 
-    $('#newgif').bind('click', function(event) {
-        var numberOfFrames = prompt("How many frames should this AWESOME gif have?",window.totalFramesForEncoder);
-        if (numberOfFrames) {
-            window.pjsin.init(parseInt(numberOfFrames));
-        };
-    });
+    // $('#newgif').bind('click', function(event) {
+    //     var numberOfFrames = prompt("How many frames should this AWESOME gif have?",window.totalFramesForEncoder);
+    //     if (numberOfFrames) {
+    //         window.pjsin.init(parseInt(numberOfFrames));
+    //     };
+    // });
     
     $('#addFrame').bind('click', function(event) {
        window.pjsin.addFrame();        
@@ -129,20 +129,24 @@ $(document).ready(function() {
 	var opts = {
 	    dragClass: "drag",
 	    accept: false,
-	    readAsMap: {
-	        'image/*': 'DataURL',
-	        'text/*' : 'Text'
-	    },
-	    readAsDefault: 'BinaryString',
+        readAsMap: {
+            'image/*': 'BinaryString',
+            'text/*' : 'Text'
+        },
+        readAsDefault: 'BinaryString',
 	    on: {
 	        load: function(e, file) {
-		        if (file.type.match(/image/)) {
-					console.log(file.name);
-					console.log(file.type);
-					window.pjsin.importImg(e.target.result);
-				} else {
-					// Not an image
-				};
+	            if (file.type.match(/gif/)) {
+	                console.log("GIF!");
+                    console.log(file.name);
+                    console.log(file.type);
+    				importGIF(e.target.result);
+    			} else {
+    				console.log("NOT A GIF!");
+                    console.log(file.name);
+                    console.log(file.type);
+        			window.pjsin.importImg(e.target.result);
+    			};
 	    	},
 	        error: function(e, file) {
 	    	},
@@ -161,7 +165,12 @@ $(document).ready(function() {
 	$("#drawcanvas").fileReaderJS(opts);
 	$("body").fileClipboard(opts);
 	
-	
+	function importGIF(gifBytes){
+    	console.log("Attempting Import");
+    	var gifImporter = new SuperGif();
+    	gifImporter.load(null,gifBytes);
+    };
+    
 
     
 //

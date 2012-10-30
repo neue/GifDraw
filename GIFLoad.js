@@ -36,11 +36,11 @@ $("#drawcanvas").fileReaderJS(opts);
 $("body").fileClipboard(opts);
 
 
-function importGIF(gif64){
+function importGIF(gifBytes){
+    console.log(gifBytes);
 	console.log("Attempting Import");
-	var rub = new SuperGif({ gif: document.getElementById('dummy') } );
-	rub.load(null,gif64);
-	
+	var gifImporter = new SuperGif();
+	gifImporter.load(null,gifBytes);
 };
 
 
