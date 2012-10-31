@@ -39,14 +39,14 @@
 		play -				Start playing the gif
 		pause -				Stop playing the gif
 		move_to(i) -		Move to frame i of the gif
-		move_relative(i) -	Move i frames ahead (or behind if i < 0)
+		move_relative(i) -	Move i gifFrames ahead (or behind if i < 0)
 
 		// getters
 		get_canvas			The canvas element that the gif is playing in. Handy for assigning event handlers to.
 		get_playing			Whether or not the gif is currently playing
 		get_loading			Whether or not the gif has finished loading/parsing
 		get_auto_play		Whether or not the gif is set to play automatically
-		get_length			The number of frames in the gif
+		get_length			The number of gifFrames in the gif
 		get_current_frame	The index of the currently displayed frame of the gif
 
 */
@@ -414,7 +414,7 @@ var SuperGif = function ( options ) {
 	var playing = true;
 	var forward = true;
 
-	var frames = [];
+	var gifFrames = [];
 		
 	var clear = function () {
 		transparency = null;
@@ -443,7 +443,7 @@ var SuperGif = function ( options ) {
         console.log("ERROR HIT "+originOfError);
 		loadError = originOfError;
 		//hdr = {	width: gif.width, height: gif.height }; // Fake header.
-		frames = [];
+		gifFrames = [];
 	};
 
 	var doHdr = function (_hdr) {
@@ -463,7 +463,7 @@ var SuperGif = function ( options ) {
 
 	var pushFrame = function () {
 		if (!frame) return;
-		frames.push({
+		gifFrames.push({
 			data: frame.getImageData(0, 0, hdr.width, hdr.height),
 			delay: delay
 		});
@@ -514,7 +514,7 @@ var SuperGif = function ( options ) {
 	var doNothing = function () {};
 	/**
 	 * @param{boolean=} draw Whether to draw progress bar or not; this is not idempotent because of translucency.
-	 *                       Note that this means that the text will be unsynchronized with the progress bar on non-frames;
+	 *                       Note that this means that the text will be unsynchronized with the progress bar on non-gifFrames;
 	 *                       but those are typically so small (GCE etc.) that it doesn't really matter. TODO: Do this properly.
 	 */
 	var withProgress = function (fn, draw) {
@@ -538,9 +538,9 @@ var SuperGif = function ( options ) {
 			pushFrame();
 			doDecodeProgress(false);
 			
-            window.pjsin.setupImportedGif(frames[0].data.width,frames[0].data.height,frames.length);
-			for (var i=0; i < frames.length; i++) {
-				window.pjsin.importFrame(frames[i].data,i);
+            window.pjsin.setupImportedGif(gifFrames[0].data.width,gifFrames[0].data.height,gifFrames.length);
+			for (var i=0; i < gifFrames.length; i++) {
+				window.pjsin.importFrame(gifFrames[i].data,i);
 			}
             window.pjsin.gotoFrame(0);
             

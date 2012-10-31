@@ -129,11 +129,11 @@ $(document).ready(function() {
 	var opts = {
 	    dragClass: "drag",
 	    accept: false,
+        readAsDefault: 'Text',
         readAsMap: {
-            'image/*': 'BinaryString',
+            'image/gi*': 'BinaryString',
             'text/*' : 'Text'
         },
-        readAsDefault: 'BinaryString',
 	    on: {
 	        load: function(e, file) {
 	            if (file.type.match(/gif/)) {
