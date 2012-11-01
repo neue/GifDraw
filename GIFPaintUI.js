@@ -28,6 +28,15 @@ $(document).ready(function() {
     });
     $('#tracing').bind('change', function(event) {
         window.pjsin.setTracing($('#tracing').is(":checked"));
+        if ($('#tracing').is(":checked") == true) {
+            $("#tracingOpacity").removeAttr('disabled');        
+        } else {
+            $("#tracingOpacity").attr('disabled', 'disabled');
+        };
+    });
+
+    $('#tracingOpacity').bind('change', function(event) {
+        window.pjsin.setTracingOpacity($("#tracingOpacity").val());
     });
     
     // Colour

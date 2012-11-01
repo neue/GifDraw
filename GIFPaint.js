@@ -44,6 +44,7 @@
     	frames = new Array(animationLength);
         onionSkin = $('#onionSkin').is(":checked");
         tracing = $('#tracing').is(":checked");
+        tracingOpacity = $("#tracingOpacity").val();
     	totalFrames = frames.length;
     	console.log(totalFrames);
         window.totalFramesForEncoder = totalFrames;
@@ -137,10 +138,19 @@
 		}
 	}
 	
+    var mouseLastX;
+    var mouseLastY;
+	
 	void mousePressed() {
+		console.log(shiftHeld);
         saveUndoState();
-        if(mouseButton == LEFT)   {mouseClickTool(mouseX,mouseY,mouseX,mouseY,0);   };
-        if(mouseButton == RIGHT)  {mouseClickTool(mouseX,mouseY,mouseX,mouseY,1);   };
+        if (!shiftHeld) {
+            if(mouseButton == LEFT)   {mouseClickTool(mouseX,mouseY,mouseX,mouseY,0);   };
+            if(mouseButton == RIGHT)  {mouseClickTool(mouseX,mouseY,mouseX,mouseY,1);   };
+        } else {
+            if(mouseButton == LEFT)   {mouseClickTool(mouseLastX,mouseLastY,mouseX,mouseY,0);   };
+            if(mouseButton == RIGHT)  {mouseClickTool(mouseLastX,mouseLastY,mouseX,mouseY,1);   };
+        };
     };
     
     void mouseReleased(){
@@ -148,12 +158,16 @@
         frames[currentFrame].loadPixels();
         // END HACK
 		redrawFrame(currentFrame); // Redraw Onion Skin
+        mouseLastX = mouseX;
+        mouseLastY = mouseY;
     }
 	
 	void mouseDragged() {  
         if(mouseButton == LEFT)   {mouseDragTool(pmouseX,pmouseY,mouseX,mouseY,0);   };
         if(mouseButton == RIGHT)  {mouseDragTool(pmouseX,pmouseY,mouseX,mouseY,1);   };
 	};
+	
+	var shiftHeld = false;
 	
 	void keyPressed() {
         // console.log(key);
@@ -181,18 +195,22 @@
 		if (key == 114) { $('#leftColour').miniColors('value',hex(color(random(255),random(255),random(255)),6))};
 
 		if (key == CODED) {
+			console.log("coded "+keyCode);
 		    if (keyCode == LEFT)    {prevFrame();}
 		    if (keyCode == RIGHT)   {nextFrame();}
+			if (keyCode == SHIFT)   {shiftHeld = true;}
 		};
 		
 	};
+	
+	void keyReleased(){ shiftHeld = false; };
 	
 	void switchFrame(framenum){
         gotoFrame(framenum);
         $("#framenumber").val(currentFrame);
         
 	};
-	
+		
 	void gotoFrame(framenum){
 	    undoPossible = false;
 		image(frames[framenum],0,0);
@@ -202,7 +220,7 @@
     		noTint();		    
 		};
 		if (tracing) {
-            tint(255, 50);
+            tint(255, tracingOpacity);
             image(tracingFrame,0,0);
     		noTint();		    
 		};
@@ -219,7 +237,7 @@
     		noTint();		    
 		};
 		if (tracing) {
-            tint(255, 50);
+            tint(255, tracingOpacity);
             image(tracingFrame,0,0);
     		noTint();		    
 		};
@@ -275,6 +293,12 @@
         tracing = value;
         gotoFrame(currentFrame);
         console.log("Tracing Layer: "+tracing);
+    };
+    
+    void setTracingOpacity(value){
+        tracingOpacity = value;
+        redrawFrame(currentFrame);
+        
     };
     
     void setStrokeWeight(value){
@@ -363,5 +387,3 @@ void importFrame(frameData,frameNumber){
     gotoFrame(frameNumber);
     frames[frameNumber].image(importedFrame,0,0);
 }
-
-	
