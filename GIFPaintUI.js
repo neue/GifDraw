@@ -184,9 +184,15 @@ $(document).ready(function() {
     // encoder.setQuality(10);
     // var context = canvas.getContext('2d');
    
+	 // m    m m    m m     mmmmmmm mmmmm    mmm   mmmm  mmmmm  mmmmmm
+	 // ##  ## #    # #        #      #    m"   " m"  "m #   "# #     
+	 // # ## # #    # #        #      #    #      #    # #mmmm" #mmmmm
+	 // # "" # #    # #        #      #    #      #    # #   "m #     
+	 // #    # "mmmm" #mmmmm   #    mm#mm   "mmm"  #mm#  #    " #mmmmm
+	 // GIF RENDERING
+
     $('#encode').bind('click', function(event) {
         console.log("ENCODING MOTHERFUCKER");
-	    $('#encoding').removeClass("hidden");
 
 		frameDataArray = new Array();
 		for (var i=0; i < window.totalFramesForEncoder; i++) {
@@ -230,11 +236,16 @@ $(document).ready(function() {
 
 
 var frameDataArray = new Array();
-
+var encodeNumber = 0;
 this.encodeGIF = function() {
 
-	$('#frameCount').html("<progress id='gifProgress' max='"+frameDataArray.length+"'></progress>");
-
+	//$('#frameCount').html("<progress id='gifProgress' max='"+frameDataArray.length+"'></progress>");
+	
+	var progressbar = $("<progress/>", {
+	  "id": "gifProgress"+encodeNumber,
+	  "max": frameDataArray.length
+	}).appendTo("#frameCount");
+	
 	var delay = 100;
 	var gifWidth = document.getElementById('drawcanvas').width;
 	var gifHeight = document.getElementById('drawcanvas').height;
@@ -256,7 +267,7 @@ this.encodeGIF = function() {
 		animation_parts[frame_index] = frame_data;
 		
 
-        $('#gifProgress').val(frame_index);
+        progressbar.val(frame_index);
         console.log("Encoding "+frame_index);
 
 
@@ -275,9 +286,9 @@ this.encodeGIF = function() {
 		var gifItem = new Image();
 		gifItem.src = data_url;
 		var thumbs = document.getElementById("gifContainer");
-
+		progressbar.remove();
+		
 		document.getElementById("gifContainer").appendChild(gifItem);	
-        $('#encoding').addClass("hidden");
 
 	}
 

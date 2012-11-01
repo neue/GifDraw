@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> - jsFiddle demo</title>
+  
+  <style type='text/css'>
+    
+  </style>
+  
+
+
+
+
+
+</head>
+<body>
+  
+  	<script type='text/javascript'>
+
+	var canvas = document.createElement('canvas');
+	var ctx    = canvas.getContext('2d');
+
+	var img    = new Image();
+	img.crossOrigin = "anonymous";
+
+	img.onload = function() {
+	    canvas.width  = img.width;
+	    canvas.height = img.height;
+	    ctx.drawImage( img, 0, 0 );
+
+	    var imageData  = ctx.getImageData( 0, 0, img.width, img.height);
+	    var depth      = 32;
+
+	    // Matrix
+	    var threshold_map_4x4 = [
+	        [  1,  9,  3, 11 ],
+	        [ 13,  5, 15,  7 ],
+	        [  4, 12,  2, 10 ],
+	        [ 16,  8, 14,  6 ]
+	    ];
+
+	    // imageData
+	    var width  = imageData.width;
+	    var height = imageData.height;
+	    var pixel  = imageData.data;
+	    var x, y, a, b;
+
+	    // filter
+	    for ( x=0; x<width; x++ )
+	    {
+	        for ( y=0; y<height; y++ )
+	        {
+	            a    = ( x * height + y ) * 4;
+	            b    = threshold_map_4x4[ x%4 ][ y%4 ];
+	            pixel[ a + 0 ] = ( (pixel[ a + 0 ]+ b) / depth | 0 ) * depth;
+	            pixel[ a + 1 ] = ( (pixel[ a + 1 ]+ b) / depth | 0 ) * depth;
+	            pixel[ a + 2 ] = ( (pixel[ a + 2 ]+ b) / depth | 0 ) * depth;
+	            //pixel[ a + 3 ] = ( (pixel[ a + 3 ]+ b) / depth | 3 ) * depth;
+	        }
+	    }
+
+	    ctx.putImageData( imageData, 0, 0);
+
+	};
+
+	img.src = "img/spectrum.png";
+
+	document.body.appendChild(canvas);
+
+
+	</script>
+</body>
+
+
+</html>
+

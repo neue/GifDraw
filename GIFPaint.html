@@ -44,7 +44,7 @@
 		<div class="span6">
 				<div>
 					<input type="input" class="span2" id="leftColour" name="leftColour" value="#000000" />
-					<input type="input" class="span2" id="rightColour" name="rightColour" value="#C0C0C0" />					
+					<input type="input" class="span2" id="rightColour" name="rightColour" value="#F0F0F0" />					
 				</div>
 				<div>
 					<button class="btn btn-info" id="tool_paint">Paint</button>					
@@ -61,17 +61,20 @@
 			<button class="btn" id="copy">&#x2318; Copy</button>
 			<button class="btn" id="paste">&#x2318; Paste</button>
 			<button class="btn" id="undo">Undo</button>
-		</div>
-	</div>
-	<div class="well">
+		</div><br>
 		<div class="input">
 			<button class="btn btn-success" id="encode">&#x2605; MAKE GIF &#x2605;</button>
 			<button class="btn" id="frames">Make Frames</button>
-			<!-- <button class="btn btn-danger" id="newgif">New GIF</button> -->
 			<button class="btn btn-danger" id="showModal">New GIF</button>			
 		</div>		
-		
 	</div>
+
+		<div id="encoding">
+			<div id="frameCount">
+
+			</div>
+		</div>
+
 		<img id="output"/>
 		<table id="frameOutput">
 		</table>
@@ -80,11 +83,6 @@
 
 		</div>
 
-		<div id="encoding" class="hidden">
-			<div id="frameCount">
-
-			</div>
-		</div>
 		
 		
 	

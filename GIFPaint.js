@@ -1,15 +1,15 @@
 
     window.pjsin = Processing.getInstanceById("drawcanvas");
 
-	canvasWidth  = 450;
-	canvasHeight = 450;
+	canvasWidth  = 400;
+	canvasHeight = 400;
 
 	clipboard       = createGraphics(canvasWidth,canvasHeight,RGB);
 	undo            = createGraphics(canvasWidth,canvasHeight,RGB);
 	undoPossible    = false;
 	
     window.leftColour  = [0,0,0];
-    window.rightColour = [204,204,204];
+    window.rightColour = [240,240,240];
     
     lineWidth = $('#size').val();
     
@@ -53,7 +53,7 @@
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
-            frames[i].text("Frame "+i, 20, 20); 
+            //frames[i].text("Frame "+i, 20, 20); 
             frames[i].fill(0,0,0);
 		}
         switchFrame(0);      

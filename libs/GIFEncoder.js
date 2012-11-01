@@ -410,7 +410,7 @@
 			out.writeByte(0x21); // extension introducer
 		    out.writeByte(0xf9); // GCE label
 		    out.writeByte(4); // data block size
-		    var transp/*int*/
+		    var transp/*int*/;
 		    var disp/*int*/;
 		    if (transparent == null) {
 		      transp = 0;
