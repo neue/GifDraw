@@ -39,9 +39,11 @@
 	
         console.log("New Gif with "+animationLength+" frames");
         currentFrame = 0;
-        frames= null;
-    	frames=new Array(animationLength);
+        frames = null;
+    	tracingFrame = null;
+    	frames = new Array(animationLength);
         onionSkin = $('#onionSkin').is(":checked");
+        tracing = $('#tracing').is(":checked");
     	totalFrames = frames.length;
     	console.log(totalFrames);
         window.totalFramesForEncoder = totalFrames;
@@ -56,6 +58,13 @@
             //frames[i].text("Frame "+i, 20, 20); 
             frames[i].fill(0,0,0);
 		}
+        tracingFrame = createGraphics(canvasWidth,canvasHeight,RGB);
+        tracingFrame.background(rightColour[0],rightColour[1],rightColour[2]);
+        tracingFrame.strokeWeight(5);
+        tracingFrame.stroke(0);
+        tracingFrame.fill(255,0,0);
+        tracingFrame.text("Tracing Frame "+i, 20, 40); 
+        tracingFrame.fill(0,0,0);
         switchFrame(0);      
     }
     
@@ -192,6 +201,11 @@
             image(frames[getOnionFrame(framenum)],0,0);
     		noTint();		    
 		};
+		if (tracing) {
+            tint(255, 50);
+            image(tracingFrame,0,0);
+    		noTint();		    
+		};
 		currentFrame = framenum;
         $('label[for="framenumber"]').text("Frame "+currentFrame);
 	};
@@ -204,6 +218,12 @@
             image(frames[getOnionFrame(framenum)],0,0);
     		noTint();		    
 		};
+		if (tracing) {
+            tint(255, 50);
+            image(tracingFrame,0,0);
+    		noTint();		    
+		};
+		
 	}
 	
     void getOnionFrame(frame){
@@ -250,6 +270,11 @@
         onionSkin = value;
         gotoFrame(currentFrame);
         console.log("Onion Skin: "+onionSkin);
+    };
+    void setTracing(value){
+        tracing = value;
+        gotoFrame(currentFrame);
+        console.log("Tracing Layer: "+tracing);
     };
     
     void setStrokeWeight(value){
@@ -314,10 +339,15 @@ PImage importedImage;
 void importImg(uri){
 	console.log("Importing Image");
 	importedImage = loadImage(uri, null, function(){
-		
-	    frames[currentFrame].imageMode(CENTER);	    
-	    frames[currentFrame].image(importedImage,canvasWidth/2,canvasHeight/2);
-	    frames[currentFrame].imageMode(CORNER);
+		if (tracing) {
+		    tracingFrame.imageMode(CENTER);	    
+		    tracingFrame.image(importedImage,canvasWidth/2,canvasHeight/2);
+		    tracingFrame.imageMode(CORNER);					
+		} else {
+		    frames[currentFrame].imageMode(CENTER);	    
+		    frames[currentFrame].image(importedImage,canvasWidth/2,canvasHeight/2);
+		    frames[currentFrame].imageMode(CORNER);		
+		}
 	    redrawFrame(currentFrame);
 	});	
 }

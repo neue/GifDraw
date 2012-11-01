@@ -26,6 +26,9 @@ $(document).ready(function() {
     $('#onionSkin').bind('change', function(event) {
         window.pjsin.setOnionSkin($('#onionSkin').is(":checked"));
     });
+    $('#tracing').bind('change', function(event) {
+        window.pjsin.setTracing($('#tracing').is(":checked"));
+    });
     
     // Colour
     
