@@ -133,6 +133,46 @@ $(document).ready(function() {
 		$('#newGifModal').removeClass('in');
 		
 	});
+	
+//
+//  Play Controls
+//
+	
+	if ( !window.requestAnimationFrame ) {
+    	window.requestAnimationFrame = ( function() {
+    		return window.webkitRequestAnimationFrame ||
+    		window.mozRequestAnimationFrame ||
+    		window.oRequestAnimationFrame ||
+    		window.msRequestAnimationFrame ||
+    		function(callback, element ) {
+    			window.setTimeout( callback, 1000 / 60 );
+    		};
+
+    	} )();
+
+    }
+    
+    var playing = false;
+    var fps = 15;
+    var playingTimer;
+    $('#playpause').click(function() {
+        if (playing) {
+            console.log("Stopping");
+            clearTimeout(playingTimer);
+            playing = false;
+        } else {
+            console.log("Playing");
+            setTimeout(function() {
+                requestAnimationFrame(playGif);
+                // Drawing code goes here
+            }, 1000 / fps);
+            playing = true;
+        };
+    });
+    function playGif(){
+        window.pjsin.nextFrame();
+    }
+	
 
 //
 //	Importer
@@ -249,6 +289,8 @@ $(document).ready(function() {
 
 var frameDataArray = new Array();
 var encodeNumber = 0;
+var delay = 100;
+
 this.encodeGIF = function() {
 
 	//$('#frameCount').html("<progress id='gifProgress' max='"+frameDataArray.length+"'></progress>");
@@ -258,7 +300,6 @@ this.encodeGIF = function() {
 	  "max": frameDataArray.length
 	}).appendTo("#frameCount");
 	
-	var delay = 100;
 	var gifWidth = document.getElementById('drawcanvas').width;
 	var gifHeight = document.getElementById('drawcanvas').height;
 
