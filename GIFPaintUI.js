@@ -137,41 +137,51 @@ $(document).ready(function() {
 //
 //  Play Controls
 //
+		
+	window.requestAnimFrame = (function(){
+	    return  window.requestAnimationFrame       || 
+	        window.webkitRequestAnimationFrame || 
+	        window.mozRequestAnimationFrame    || 
+	        window.oRequestAnimationFrame      || 
+	        window.msRequestAnimationFrame     || 
+	        function(/* function */ callback, /* DOMElement */ element){
+	            return window.setTimeout(callback, 1000 / 60);
+	        };
+	})();
 	
-	if ( !window.requestAnimationFrame ) {
-    	window.requestAnimationFrame = ( function() {
-    		return window.webkitRequestAnimationFrame ||
-    		window.mozRequestAnimationFrame ||
-    		window.oRequestAnimationFrame ||
-    		window.msRequestAnimationFrame ||
-    		function(callback, element ) {
-    			window.setTimeout( callback, 1000 / 60 );
-    		};
-
-    	} )();
-
-    }
     
+
     var playing = false;
-    var fps = 15;
+    var fps = $("#playSpeed").val();
     var playingTimer;
     $('#playpause').click(function() {
         if (playing) {
             console.log("Stopping");
             clearTimeout(playingTimer);
             playing = false;
+			$('#playpause').text("Play");
         } else {
             console.log("Playing");
-            setTimeout(function() {
-                requestAnimationFrame(playGif);
-                // Drawing code goes here
+            playingTimer = setTimeout(function() {
+	            requestAnimFrame(playGif);
             }, 1000 / fps);
             playing = true;
+			$('#playpause').text("Pause");
         };
+		console.log("playingTimer:"+playingTimer);
     });
+
     function playGif(){
         window.pjsin.nextFrame();
+        playingTimer = setTimeout(function() {
+            requestAnimFrame(playGif);
+        }, 1000 / fps);
     }
+
+    $('#playSpeed').bind('change', function(event) {
+		fps = $("#playSpeed").val();
+		console.log(fps);
+    });
 	
 
 //
@@ -289,10 +299,10 @@ $(document).ready(function() {
 
 var frameDataArray = new Array();
 var encodeNumber = 0;
-var delay = 100;
 
 this.encodeGIF = function() {
-
+	var delay = $("#playSpeed").val();
+	
 	//$('#frameCount').html("<progress id='gifProgress' max='"+frameDataArray.length+"'></progress>");
 	
 	var progressbar = $("<progress/>", {

@@ -24,7 +24,7 @@ self.onmessage = function(event) {
   //1+ -> loop n times then stop
   encoder.setQuality(1);
   encoder.setSize(width, height); 
-  encoder.setDelay(delay);	//go to next frame every n milliseconds
+  encoder.setFrameRate(delay);	//go to next frame every n milliseconds
   
   if(frame_index == 0)
   {
