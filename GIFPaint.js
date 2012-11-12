@@ -36,12 +36,12 @@
 		clipboard       = createGraphics(canvasWidth,canvasHeight,RGB);
 		undo            = createGraphics(canvasWidth,canvasHeight,RGB);
 		
-	
         console.log("New Gif with "+animationLength+" frames");
         currentFrame = 0;
         frames = null;
     	tracingFrame = null;
-    	frames = new Array(animationLength);
+    	frames          = new Array(animationLength);
+    	tracingFrames   = new Array(animationLength);
         onionSkin = $('#onionSkin').is(":checked");
         tracing = $('#tracing').is(":checked");
         tracingOpacity = $("#tracingOpacity").val();
@@ -50,22 +50,25 @@
         window.totalFramesForEncoder = totalFrames;
     	$("#framenumber").attr("max",totalFrames-1);
     	$("#framenumber").val(currentFrame);  
-    	for (var i=0; i < frames.length; i++) {
+        for (var i=0; i < frames.length; i++) {
             frames[i] = createGraphics(canvasWidth,canvasHeight,RGB);
             frames[i].background(rightColour[0],rightColour[1],rightColour[2]);
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
-            //frames[i].text("Frame "+i, 20, 20); 
+            frames[i].text("Frame "+i, 20, 20); 
             frames[i].fill(0,0,0);
-		}
-        tracingFrame = createGraphics(canvasWidth,canvasHeight,RGB);
-        tracingFrame.background(rightColour[0],rightColour[1],rightColour[2]);
-        tracingFrame.strokeWeight(5);
-        tracingFrame.stroke(0);
-        tracingFrame.fill(255,0,0);
-        tracingFrame.text("Tracing Frame "+i, 20, 40); 
-        tracingFrame.fill(0,0,0);
+        }
+        for (var i=0; i < tracingFrames.length; i++) {
+            tracingFrames[i] = createGraphics(canvasWidth,canvasHeight,RGB);
+            //tracingFrames[i].background(255,0,0);
+            tracingFrames[i].strokeWeight(5);
+            tracingFrames[i].stroke(0);
+            tracingFrames[i].fill(0,255,0);
+            tracingFrames[i].text("Tracing Frame "+i, 20, 40); 
+            //frames[i].text("Frame "+i, 20, 20); 
+            tracingFrames[i].fill(0,0,0);
+        }
         switchFrame(0);      
     }
     
@@ -97,6 +100,20 @@
         framesCombined  = framesBefore.concat(framesAfter);
 		frames = framesCombined;
         console.log("Frames after addition :"+frames.length);
+
+            console.log("Tracing before addition:"+tracingFrames.length);
+            tracingFramesBefore    = tracingFrames.splice(0,parseInt(currentFrame)+1);        
+            tracingFramesAfter     = tracingFrames.splice(0,tracingFrames.length);
+            tracingFramesBefore.push(null);
+            tracingFramesBefore[tracingFramesBefore.length-1] = tracingFramesBefore[tracingFramesBefore.length-2];
+            tracingFramesBefore[tracingFramesBefore.length-1].fill(0,255,0);
+            tracingFramesBefore[tracingFramesBefore.length-1].text("NEW Tracing Frame", 20, 60); 
+            tracingFramesBefore[tracingFramesBefore.length-1].fill(0,0,0);
+            tracingFramesCombined  = tracingFramesBefore.concat(tracingFramesAfter);
+            tracingFrames = tracingFramesCombined;
+            console.log("Tracing after addition :"+tracingFrames.length);
+        
+        
         resetFrameData(parseInt(currentFrame)+1);
     };
     
@@ -108,6 +125,13 @@
     		framesCombined  = framesBefore.concat(framesAfter);
             frames = framesCombined;
             console.log("Frames after deletion :"+frames.length);
+            console.log("Tracing before deletion:"+frames.length);
+            tracingFramesBefore    = tracingFrames.splice(0,currentFrame);
+            tracingFramesAfter     = tracingFrames.splice(1,tracingFrames.length);
+            tracingFramesCombined  = tracingFramesBefore.concat(tracingFramesAfter);
+            tracingFrames = tracingFramesCombined;
+            console.log("Tracing after deletion :"+tracingFrames.length);
+            
             resetFrameData(currentFrame - 1);
         }
     };
@@ -221,7 +245,7 @@
 		};
 		if (tracing) {
             tint(255, tracingOpacity);
-            image(tracingFrame,0,0);
+            image(tracingFrames[framenum],0,0);
     		noTint();		    
 		};
 		currentFrame = framenum;
@@ -238,7 +262,7 @@
 		};
 		if (tracing) {
             tint(255, tracingOpacity);
-            image(tracingFrame,0,0);
+            image(tracingFrames[framenum],0,0);
     		noTint();		    
 		};
 		
@@ -250,16 +274,7 @@
         } else {
             return totalFrames - 1;
         };
-    }
-
-    void getMotionBlurFrame(target){
-        if (frame-target < 1) {
-            return totalFrames - target;
-        } else {
-            return frame - target;
-        };
-    }
-	
+    }	
 
 	void whatsLastFrame(){
 	    if (currentFrame == 0) {
@@ -298,15 +313,16 @@
     void setTracingOpacity(value){
         tracingOpacity = value;
         redrawFrame(currentFrame);
-        
     };
     
     void setStrokeWeight(value){
         console.log("Setting Stroke to:"+value);
+        // CAN THIS BE REMOVED??
         strokeWeight(value);
         for (var i=0; i < frames.length; i++) {
             frames[i].strokeWeight(value);
         }
+        // Prolly ??
         setBrushWidth(parseInt(value));
     };
 
@@ -363,16 +379,10 @@ PImage importedImage;
 void importImg(uri){
 	console.log("Importing Image");
 	importedImage = loadImage(uri, null, function(){
-		if (tracing) {
-		    tracingFrame.imageMode(CENTER);	    
-		    tracingFrame.image(importedImage,canvasWidth/2,canvasHeight/2);
-		    tracingFrame.imageMode(CORNER);					
-		} else {
-		    frames[currentFrame].imageMode(CENTER);	    
-		    frames[currentFrame].image(importedImage,canvasWidth/2,canvasHeight/2);
-		    frames[currentFrame].imageMode(CORNER);		
-		}
-	    redrawFrame(currentFrame);
+    tracingFrames[currentFrame].imageMode(CENTER);	    
+    tracingFrames[currentFrame].image(importedImage,canvasWidth/2,canvasHeight/2);
+    tracingFrames[currentFrame].imageMode(CORNER);					
+    redrawFrame(currentFrame);
 	});	
 }
 
@@ -385,5 +395,5 @@ PImage importedFrame;
 void importFrame(frameData,frameNumber){
     importedFrame.fromImageData(frameData);
     gotoFrame(frameNumber);
-    frames[frameNumber].image(importedFrame,0,0);
+    tracingFrames[frameNumber].image(importedFrame,0,0);
 }

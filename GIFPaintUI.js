@@ -144,7 +144,7 @@ $(document).ready(function() {
 	        window.mozRequestAnimationFrame    || 
 	        window.oRequestAnimationFrame      || 
 	        window.msRequestAnimationFrame     || 
-	        function(/* function */ callback, /* DOMElement */ element){
+	        function(callback, element){
 	            return window.setTimeout(callback, 1000 / 60);
 	        };
 	})();
@@ -213,6 +213,7 @@ $(document).ready(function() {
 	        error: function(e, file) {
 	    	},
 	        loadend: function(e, file) {
+                turnTracingOn();
 	    	},
 	        abort: function(e, file) {
 	    	},
@@ -226,6 +227,14 @@ $(document).ready(function() {
 	};
 	$("#drawcanvas").fileReaderJS(opts);
 	$("body").fileClipboard(opts);
+	
+	function turnTracingOn(){
+    	$('#tracing').attr('checked',true);
+    	window.pjsin.setTracing($('#tracing').is(":checked"));
+    	$("#tracingOpacity").removeAttr('disabled');        
+    	$('#tracingOpacity').val(50); 
+    	window.pjsin.setTracingOpacity($("#tracingOpacity").val());
+	};
 	
 	function importGIF(gifBytes){
     	console.log("Attempting Import");
