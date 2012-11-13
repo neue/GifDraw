@@ -13,6 +13,7 @@
     
     lineWidth = $('#size').val();
     
+    var gifBackgroundColor;
     
 
 	void setup(){  
@@ -52,7 +53,7 @@
     	$("#framenumber").val(currentFrame);  
         for (var i=0; i < frames.length; i++) {
             frames[i] = createGraphics(canvasWidth,canvasHeight,RGB);
-            frames[i].background(rightColour[0],rightColour[1],rightColour[2]);
+            //frames[i].background(rightColour[0],rightColour[1],rightColour[2]);
             frames[i].strokeWeight(5);
             frames[i].stroke(0);
             frames[i].fill(255,0,0);
@@ -69,6 +70,8 @@
             //frames[i].text("Frame "+i, 20, 20); 
             tracingFrames[i].fill(0,0,0);
         }
+        gifBackgroundColor = color(rightColour[0],rightColour[1],rightColour[2]);
+        
         switchFrame(0);      
     }
     
@@ -239,34 +242,36 @@
 		
 	void gotoFrame(framenum){
 	    undoPossible = false;
-		image(frames[framenum],0,0);
-		if (onionSkin) {
-            tint(255, 50);
-            image(frames[getOnionFrame(framenum)],0,0);
-    		noTint();		    
-		};
+	    background(gifBackgroundColor);
 		if (tracing) {
             tint(255, tracingOpacity);
             image(tracingFrames[framenum],0,0);
     		noTint();		    
 		};
+		if (onionSkin) {
+            tint(255, 50);
+            image(frames[getOnionFrame(framenum)],0,0);
+    		noTint();		    
+		};
+		image(frames[framenum],0,0);
 		currentFrame = framenum;
         $('label[for="framenumber"]').text("Frame "+currentFrame);
 	};
 	
 	// Duplicate of code in above function, for floodfill
 	void redrawFrame(framenum){
-	    image(frames[framenum],0,0);
-		if (onionSkin) {
-            tint(255, 50);
-            image(frames[getOnionFrame(framenum)],0,0);
-    		noTint();		    
-		};
+	    background(gifBackgroundColor);
 		if (tracing) {
             tint(255, tracingOpacity);
             image(tracingFrames[framenum],0,0);
     		noTint();		    
 		};
+		if (onionSkin) {
+            tint(255, 50);
+            image(frames[getOnionFrame(framenum)],0,0);
+    		noTint();		    
+		};
+	    image(frames[framenum],0,0);
 		
 	}
 	

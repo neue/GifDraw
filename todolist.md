@@ -6,3 +6,4 @@
 - 1px brush while frame scrubbing error
 - GIFBrush
 - Match play speed to encoded speed
+- Tracing Starts Disabled

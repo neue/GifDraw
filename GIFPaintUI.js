@@ -381,7 +381,8 @@ this.encodeGIF = function() {
 			scratchCanvasContext.fillStyle = "#FFFFFF";
 			scratchCanvasContext.fillRect(0,0,scratchCanvas.width, scratchCanvas.height);
 			scratchCanvasContext.drawImage(this,0,0,scratchCanvas.width,scratchCanvas.height);
-			var imdata = ditherImageData(scratchCanvasContext.getImageData(0,0, scratchCanvas.width, scratchCanvas.height));
+			//var imdata = ditherImageData(scratchCanvasContext.getImageData(0,0, scratchCanvas.width, scratchCanvas.height));
+			var imdata = scratchCanvasContext.getImageData(0,0, scratchCanvas.width, scratchCanvas.height);
 			console.log("imageItems "+this.index);
 			worker.postMessage({"frame_index": this.index, "delay": delay, "frame_length":frameDataArray.length-1, "height":scratchCanvas.height, "width":scratchCanvas.width, "imageData":imdata.data}); //imarray.join(',')
 
