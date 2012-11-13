@@ -30,9 +30,15 @@
 	    canvas.height = img.height;
 	    ctx.drawImage( img, 0, 0 );
 
-	    var imageData  = ctx.getImageData( 0, 0, img.width, img.height);
-	    var depth      = 32;
+	    var imageDataGet  = ctx.getImageData( 0, 0, img.width, img.height);
+	    
+	
+	    ctx.putImageData( ditherImageData(imageDataGet), 0, 0);
 
+	};
+	
+	function ditherImageData(imageData){
+		var depth      = 32;
 	    // Matrix
 	    var threshold_map_4x4 = [
 	        [  1,  9,  3, 11 ],
@@ -40,19 +46,17 @@
 	        [  4, 12,  2, 10 ],
 	        [ 16,  8, 14,  6 ]
 	    ];
-
 	    // imageData
-	    var width  = imageData.width;
-	    var height = imageData.height;
+	    var dataWidth  = imageData.width;
+	    var dataHeight = imageData.height;
 	    var pixel  = imageData.data;
 	    var x, y, a, b;
-
 	    // filter
-	    for ( x=0; x<width; x++ )
+	    for ( x=0; x<dataWidth; x++ )
 	    {
-	        for ( y=0; y<height; y++ )
+	        for ( y=0; y<dataHeight; y++ )
 	        {
-	            a    = ( x * height + y ) * 4;
+	            a    = ( x * dataHeight + y ) * 4;
 	            b    = threshold_map_4x4[ x%4 ][ y%4 ];
 	            pixel[ a + 0 ] = ( (pixel[ a + 0 ]+ b) / depth | 0 ) * depth;
 	            pixel[ a + 1 ] = ( (pixel[ a + 1 ]+ b) / depth | 0 ) * depth;
@@ -60,10 +64,9 @@
 	            //pixel[ a + 3 ] = ( (pixel[ a + 3 ]+ b) / depth | 3 ) * depth;
 	        }
 	    }
-
-	    ctx.putImageData( imageData, 0, 0);
-
+	    return imageData;
 	};
+	
 
 	img.src = "img/spectrum.png";
 

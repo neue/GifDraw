@@ -283,7 +283,7 @@ $(document).ready(function() {
 
        // document.getElementById('output').src = 'data:image/gif;base64,'+encode64(encoder.stream().getData());        
     });
-    
+
 
 
     // $('#frames').bind('click', function(event) {
@@ -381,10 +381,44 @@ this.encodeGIF = function() {
 			scratchCanvasContext.fillStyle = "#FFFFFF";
 			scratchCanvasContext.fillRect(0,0,scratchCanvas.width, scratchCanvas.height);
 			scratchCanvasContext.drawImage(this,0,0,scratchCanvas.width,scratchCanvas.height);
-			var imdata = scratchCanvasContext.getImageData(0,0, scratchCanvas.width, scratchCanvas.height).data;
+			var imdata = ditherImageData(scratchCanvasContext.getImageData(0,0, scratchCanvas.width, scratchCanvas.height));
 			console.log("imageItems "+this.index);
-			worker.postMessage({"frame_index": this.index, "delay": delay, "frame_length":frameDataArray.length-1, "height":scratchCanvas.height, "width":scratchCanvas.width, "imageData":imdata}); //imarray.join(',')
+			worker.postMessage({"frame_index": this.index, "delay": delay, "frame_length":frameDataArray.length-1, "height":scratchCanvas.height, "width":scratchCanvas.width, "imageData":imdata.data}); //imarray.join(',')
 
 		}
 	}
+	
+
+    
+	function ditherImageData(imageDataToDither){
+		var depth      = 32;
+	    // Matrix
+	    var threshold_map_4x4 = [
+	        [  1,  9,  3, 11 ],
+	        [ 13,  5, 15,  7 ],
+	        [  4, 12,  2, 10 ],
+	        [ 16,  8, 14,  6 ]
+	    ];
+	    // imageData
+	    var dataWidth  = imageDataToDither.width;
+	    var dataHeight = imageDataToDither.height;
+	    var pixel  = imageDataToDither.data;
+		console.log("Dithering:"+dataHeight+" "+dataWidth+" "+pixel);
+	    var x, y, a, b;
+	    // filter
+	    for ( x=0; x<dataWidth; x++ )
+	    {
+	        for ( y=0; y<dataHeight; y++ )
+	        {
+	            a    = ( x * dataHeight + y ) * 4;
+	            b    = threshold_map_4x4[ x%4 ][ y%4 ];
+	            pixel[ a + 0 ] = ( (pixel[ a + 0 ]+ b) / depth | 0 ) * depth;
+	            pixel[ a + 1 ] = ( (pixel[ a + 1 ]+ b) / depth | 0 ) * depth;
+	            pixel[ a + 2 ] = ( (pixel[ a + 2 ]+ b) / depth | 0 ) * depth;
+	            //pixel[ a + 3 ] = ( (pixel[ a + 3 ]+ b) / depth | 3 ) * depth;
+	        }
+	    }
+	    return imageDataToDither;
+	};
+    
 }

@@ -86,6 +86,7 @@
     };
     
     void addFrame(){
+		var framesBefore, framesAfter, framesCombined, tracingFramesBefore, tracingFramesAfter, tracingFramesCombined;
         console.log("Frames before addition:"+frames.length);
         framesBefore    = frames.splice(0,parseInt(currentFrame)+1);		
         framesAfter     = frames.splice(0,frames.length);
@@ -118,6 +119,8 @@
     };
     
     void removeFrame(){
+		var framesBefore, framesAfter, framesCombined, tracingFramesBefore, tracingFramesAfter, tracingFramesCombined;
+	
         if(frames.length > 1){
             console.log("Frames before deletion:"+frames.length);
     		framesBefore    = frames.splice(0,currentFrame);
@@ -219,7 +222,6 @@
 		if (key == 114) { $('#leftColour').miniColors('value',hex(color(random(255),random(255),random(255)),6))};
 
 		if (key == CODED) {
-			console.log("coded "+keyCode);
 		    if (keyCode == LEFT)    {prevFrame();}
 		    if (keyCode == RIGHT)   {nextFrame();}
 			if (keyCode == SHIFT)   {shiftHeld = true;}
