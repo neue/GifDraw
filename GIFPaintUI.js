@@ -74,7 +74,22 @@ $(document).ready(function() {
 		window.pjsin.setTool(2); 
 		$('#drawcanvas').attr('class','inkdropper');
 	});
+
+//     
+// Mouse
+// To fix canvas edge drawing
+
+// var pmouseTestX,pmouseTestY,mouseTestX,mouseTestY;
+// 
+// $('body').mousemove(function(e) {
+//         mouseTestX = e.pageX - canvas.offsetLeft;
+//         mouseTestY = e.pageY - canvas.offsetTop;
+//         window.pjsin.drawLine(pmouseTestX,pmouseTestY,mouseTestX,mouseTestY,0);
+//         pmouseTestX = mouseTestX;
+//         pmouseTestY = mouseTestY;
+// });
     
+	
     
 //
 //  Documents

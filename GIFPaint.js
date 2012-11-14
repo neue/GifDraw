@@ -183,6 +183,8 @@
         };
     };
     
+    //void drawLine(lasyX,lastY,curX,curY){ mouseClickTool(lasyX,lastY,curX,curY,0);  }
+    
     void mouseReleased(){
         // HACK
         frames[currentFrame].loadPixels();
@@ -370,7 +372,7 @@
 	
 	void retrieveUndoState(){
 	    if (undoPossible) {
-    		frames[currentFrame].image(undo);
+            frames[currentFrame].image(undo,40,40);
     		switchFrame(currentFrame);	    	        
 	    } else {
 	        console.log("Can't Undo");
