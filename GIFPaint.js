@@ -95,7 +95,6 @@
         framesAfter     = frames.splice(0,frames.length);
         framesBefore.push(null);
         framesBefore[framesBefore.length-1] = createGraphics(canvasWidth,canvasHeight,RGB);
-        framesBefore[framesBefore.length-1].background(rightColour[0],rightColour[1],rightColour[2]);
         framesBefore[framesBefore.length-1].strokeWeight(5);
         framesBefore[framesBefore.length-1].stroke(0);
         framesBefore[framesBefore.length-1].fill(255,0,0);
@@ -109,6 +108,8 @@
             tracingFramesBefore    = tracingFrames.splice(0,parseInt(currentFrame)+1);        
             tracingFramesAfter     = tracingFrames.splice(0,tracingFrames.length);
             tracingFramesBefore.push(null);
+	        tracingFramesBefore[tracingFramesBefore.length-1] = createGraphics(canvasWidth,canvasHeight,RGB);
+			// Might cause problems if we can ever draw into Tracing layer
             tracingFramesBefore[tracingFramesBefore.length-1] = tracingFramesBefore[tracingFramesBefore.length-2];
             tracingFramesBefore[tracingFramesBefore.length-1].fill(0,255,0);
             tracingFramesBefore[tracingFramesBefore.length-1].text("NEW Tracing Frame", 20, 60); 
@@ -372,7 +373,8 @@
 	
 	void retrieveUndoState(){
 	    if (undoPossible) {
-            frames[currentFrame].image(undo,40,40);
+		    frames[currentFrame] = createGraphics(canvasWidth,canvasHeight,RGB);
+            frames[currentFrame].image(undo);
     		switchFrame(currentFrame);	    	        
 	    } else {
 	        console.log("Can't Undo");

@@ -247,7 +247,7 @@ $(document).ready(function() {
     	$('#tracing').attr('checked',true);
     	window.pjsin.setTracing($('#tracing').is(":checked"));
     	$("#tracingOpacity").removeAttr('disabled');        
-    	$('#tracingOpacity').val(50); 
+    	$('#tracingOpacity').val(160); 
     	window.pjsin.setTracingOpacity($("#tracingOpacity").val());
 	};
 	
@@ -278,7 +278,7 @@ $(document).ready(function() {
 	 // GIF RENDERING
 
     $('#encode').bind('click', function(event) {
-        console.log("ENCODING MOTHERFUCKER");
+        console.log("ENCODING, SET THE 89a HEART ON FIRE!");
 
 		frameDataArray = new Array();
 		for (var i=0; i < window.totalFramesForEncoder; i++) {
