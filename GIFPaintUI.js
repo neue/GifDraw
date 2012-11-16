@@ -146,7 +146,8 @@ $(document).ready(function() {
 			parseInt($('#newGifFrames').val())
 		);
 		$('#newGifModal').removeClass('in');
-		
+		$("#tracing").attr("disabled", "disabled");        
+    	$("#tracingOpacity").attr("disabled", "disabled");        		
 	});
 	
 //
@@ -244,10 +245,11 @@ $(document).ready(function() {
 	$("body").fileClipboard(opts);
 	
 	function turnTracingOn(){
+		$("#tracing").removeAttr('disabled');        
     	$('#tracing').attr('checked',true);
     	window.pjsin.setTracing($('#tracing').is(":checked"));
     	$("#tracingOpacity").removeAttr('disabled');        
-    	$('#tracingOpacity').val(160); 
+    	$('#tracingOpacity').val(255); 
     	window.pjsin.setTracingOpacity($("#tracingOpacity").val());
 	};
 	

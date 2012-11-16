@@ -8,7 +8,8 @@ body {
 }
 
 #drawcanvas.paint {
-    cursor: url('./img/Paint.cur'), crosshair;	
+    cursor: url('./img/Brush.cur') 0 2, crosshair;	
+/*    cursor: url('./img/Paint.cur'), crosshair;*/
 }
 
 #drawcanvas.fill {
